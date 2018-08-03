@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named disparityMap
+
+# Build rule for target.
+disparityMap: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 disparityMap
+.PHONY : disparityMap
+
+# fast build rule for target.
+disparityMap/fast:
+	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/build
+.PHONY : disparityMap/fast
+
+#=============================================================================
 # Target rules for targets named tissueRetraction
 
 # Build rule for target.
@@ -122,6 +135,33 @@ tissueRetraction: cmake_check_build_system
 tissueRetraction/fast:
 	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/build
 .PHONY : tissueRetraction/fast
+
+disparityMap.o: disparityMap.cpp.o
+
+.PHONY : disparityMap.o
+
+# target to build an object file
+disparityMap.cpp.o:
+	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/disparityMap.cpp.o
+.PHONY : disparityMap.cpp.o
+
+disparityMap.i: disparityMap.cpp.i
+
+.PHONY : disparityMap.i
+
+# target to preprocess a source file
+disparityMap.cpp.i:
+	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/disparityMap.cpp.i
+.PHONY : disparityMap.cpp.i
+
+disparityMap.s: disparityMap.cpp.s
+
+.PHONY : disparityMap.s
+
+# target to generate assembly for a file
+disparityMap.cpp.s:
+	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/disparityMap.cpp.s
+.PHONY : disparityMap.cpp.s
 
 main.o: main.cpp.o
 
@@ -158,7 +198,11 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... disparityMap"
 	@echo "... tissueRetraction"
+	@echo "... disparityMap.o"
+	@echo "... disparityMap.i"
+	@echo "... disparityMap.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -142,8 +142,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.tissueRetraction">
+  <component name="RunManager" selected="Application.disparityMap">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="disparityMap" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tissueRetraction" TARGET_NAME="disparityMap" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="tissueRetraction" RUN_TARGET_NAME="disparityMap">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -155,6 +160,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.Build All" />
+      <item itemvalue="Application.disparityMap" />
       <item itemvalue="Application.tissueRetraction" />
     </list>
   </component>
