@@ -1,5 +1,5 @@
 //
-// Created by osboxes on 8/3/18.
+// Created by aleks on 8/3/18.
 //
 
 #include "opencv2/core/core.hpp"
@@ -19,31 +19,37 @@ int main() {
     Mat disp, disp8;
 
     // Loading images
-    img_left = imread("resources/test_images/ambush_5_left.jpg");
-    img_right = imread("resources/test_images/ambush_5_right.jpg");
+    img_left = imread("resources/test_images/test_left.png");
+    img_right = imread("resources/test_images/test_right.png");
 
     // Check size of images
-    if ( img_right.empty() || img_left.empty())
-    {
+    if ( img_right.empty() || img_left.empty()) {
         cout << "Cannot read image file" << endl;
         return -1;
     }
+
+    imshow("left",img_left);
+    imshow("right",img_right);
+
 
     // Conversion to grayscale images to ease the process
     cvtColor(img_left, g_left, CV_BGR2GRAY);
     cvtColor(img_right, g_right, CV_BGR2GRAY);
 
     // Create Stereo filter
+    int numDisparities = 5;
+    int P1 = 8*numDisparities*numDisparities;
+    int P2 = 32*numDisparities*numDisparities+3000;
     Ptr<StereoBM> sbm = StereoBM::create(0, // int numDisparities = 0
                                          21); // int blockSize = 21
 
     // H. Hirschmuller algorithm
     Ptr<StereoSGBM> sgbm = StereoSGBM::create(0,    //int minDisparity /0
-                                              96,     //int numDisparities / 96
-                                              5,      //int SADWindowSize / 5
-                                              600,    //int P1 = 0 / 600
-                                              2400,   //int P2 = 0 / 2400
-                                              10,     //int disp12MaxDiff = 0 / 10
+                                              32,     //int numDisparities / 96
+                                              numDisparities,      //int SADWindowSize / 5
+                                              P1,    //int P1 = 0 / 600
+                                              P2,   //int P2 = 0 / 2400
+                                              0,     //int disp12MaxDiff = 0 / 10
                                               16,     //int preFilterCap = 0 / 16
                                               2,      //int uniquenessRatio = 0 / 2
                                               20,    //int speckleWindowSize = 0 / 20
