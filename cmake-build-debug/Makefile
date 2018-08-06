@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/osboxes/Projects/tissueRetraction/cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/opt/clion-2018.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/opt/clion-2018.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named tissueRetraction
+
+# Build rule for target.
+tissueRetraction: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tissueRetraction
+.PHONY : tissueRetraction
+
+# fast build rule for target.
+tissueRetraction/fast:
+	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/build
+.PHONY : tissueRetraction/fast
+
+#=============================================================================
 # Target rules for targets named disparityMap
 
 # Build rule for target.
@@ -124,17 +137,44 @@ disparityMap/fast:
 .PHONY : disparityMap/fast
 
 #=============================================================================
-# Target rules for targets named tissueRetraction
+# Target rules for targets named colorSegmentation
 
 # Build rule for target.
-tissueRetraction: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tissueRetraction
-.PHONY : tissueRetraction
+colorSegmentation: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 colorSegmentation
+.PHONY : colorSegmentation
 
 # fast build rule for target.
-tissueRetraction/fast:
-	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/build
-.PHONY : tissueRetraction/fast
+colorSegmentation/fast:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/build
+.PHONY : colorSegmentation/fast
+
+colorSegmentation.o: colorSegmentation.cpp.o
+
+.PHONY : colorSegmentation.o
+
+# target to build an object file
+colorSegmentation.cpp.o:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o
+.PHONY : colorSegmentation.cpp.o
+
+colorSegmentation.i: colorSegmentation.cpp.i
+
+.PHONY : colorSegmentation.i
+
+# target to preprocess a source file
+colorSegmentation.cpp.i:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.i
+.PHONY : colorSegmentation.cpp.i
+
+colorSegmentation.s: colorSegmentation.cpp.s
+
+.PHONY : colorSegmentation.s
+
+# target to generate assembly for a file
+colorSegmentation.cpp.s:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.s
+.PHONY : colorSegmentation.cpp.s
 
 disparityMap.o: disparityMap.cpp.o
 
@@ -196,10 +236,14 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
+	@echo "... tissueRetraction"
 	@echo "... rebuild_cache"
 	@echo "... disparityMap"
-	@echo "... tissueRetraction"
+	@echo "... colorSegmentation"
+	@echo "... edit_cache"
+	@echo "... colorSegmentation.o"
+	@echo "... colorSegmentation.i"
+	@echo "... colorSegmentation.s"
 	@echo "... disparityMap.o"
 	@echo "... disparityMap.i"
 	@echo "... disparityMap.s"

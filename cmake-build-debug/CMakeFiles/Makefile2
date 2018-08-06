@@ -65,13 +65,50 @@ CMAKE_SOURCE_DIR = /home/osboxes/Projects/tissueRetraction
 CMAKE_BINARY_DIR = /home/osboxes/Projects/tissueRetraction/cmake-build-debug
 
 #=============================================================================
+# Target rules for target CMakeFiles/tissueRetraction.dir
+
+# All Build rule for target.
+CMakeFiles/tissueRetraction.dir/all:
+	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/depend
+	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target tissueRetraction"
+.PHONY : CMakeFiles/tissueRetraction.dir/all
+
+# Include target in all.
+all: CMakeFiles/tissueRetraction.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/tissueRetraction.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tissueRetraction.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/tissueRetraction.dir/rule
+
+# Convenience name for target.
+tissueRetraction: CMakeFiles/tissueRetraction.dir/rule
+
+.PHONY : tissueRetraction
+
+# clean rule for target.
+CMakeFiles/tissueRetraction.dir/clean:
+	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/clean
+.PHONY : CMakeFiles/tissueRetraction.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/tissueRetraction.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/disparityMap.dir
 
 # All Build rule for target.
 CMakeFiles/disparityMap.dir/all:
 	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/depend
 	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target disparityMap"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target disparityMap"
 .PHONY : CMakeFiles/disparityMap.dir/all
 
 # Include target in all.
@@ -102,39 +139,39 @@ clean: CMakeFiles/disparityMap.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/tissueRetraction.dir
+# Target rules for target CMakeFiles/colorSegmentation.dir
 
 # All Build rule for target.
-CMakeFiles/tissueRetraction.dir/all:
-	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/depend
-	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target tissueRetraction"
-.PHONY : CMakeFiles/tissueRetraction.dir/all
+CMakeFiles/colorSegmentation.dir/all:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/depend
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target colorSegmentation"
+.PHONY : CMakeFiles/colorSegmentation.dir/all
 
 # Include target in all.
-all: CMakeFiles/tissueRetraction.dir/all
+all: CMakeFiles/colorSegmentation.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/tissueRetraction.dir/rule: cmake_check_build_system
+CMakeFiles/colorSegmentation.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tissueRetraction.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/colorSegmentation.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/tissueRetraction.dir/rule
+.PHONY : CMakeFiles/colorSegmentation.dir/rule
 
 # Convenience name for target.
-tissueRetraction: CMakeFiles/tissueRetraction.dir/rule
+colorSegmentation: CMakeFiles/colorSegmentation.dir/rule
 
-.PHONY : tissueRetraction
-
-# clean rule for target.
-CMakeFiles/tissueRetraction.dir/clean:
-	$(MAKE) -f CMakeFiles/tissueRetraction.dir/build.make CMakeFiles/tissueRetraction.dir/clean
-.PHONY : CMakeFiles/tissueRetraction.dir/clean
+.PHONY : colorSegmentation
 
 # clean rule for target.
-clean: CMakeFiles/tissueRetraction.dir/clean
+CMakeFiles/colorSegmentation.dir/clean:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/clean
+.PHONY : CMakeFiles/colorSegmentation.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/colorSegmentation.dir/clean
 
 .PHONY : clean
 
