@@ -29,3 +29,6 @@ Mat ImageProcessing::equalizeRGBImage(Mat src) {
     }
     return Mat();
 }
+
+Mat ImageProcessing::kmeansRGB(Mat src){
+}

@@ -13,7 +13,7 @@ using namespace std;
 class ImageProcessing {
 public:
     Mat equalizeRGBImage(Mat src);
-
+    Mat kmeansRGB(Mat src);
 };
 
 
