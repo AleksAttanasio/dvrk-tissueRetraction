@@ -188,6 +188,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/osboxes/Projects/tissueRetraction/ImageProcessing.cpp">
+			<Option target="colorSegmentation"/>
+		</Unit>
+		<Unit filename="/home/osboxes/Projects/tissueRetraction/ImageProcessing.h">
+			<Option target="colorSegmentation"/>
+		</Unit>
+		<Unit filename="/home/osboxes/Projects/tissueRetraction/ShowImages.cpp">
+			<Option target="colorSegmentation"/>
+		</Unit>
+		<Unit filename="/home/osboxes/Projects/tissueRetraction/ShowImages.h">
+			<Option target="colorSegmentation"/>
+		</Unit>
 		<Unit filename="/home/osboxes/Projects/tissueRetraction/colorSegmentation.cpp">
 			<Option target="colorSegmentation"/>
 		</Unit>

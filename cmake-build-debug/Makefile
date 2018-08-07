@@ -149,6 +149,60 @@ colorSegmentation/fast:
 	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/build
 .PHONY : colorSegmentation/fast
 
+ImageProcessing.o: ImageProcessing.cpp.o
+
+.PHONY : ImageProcessing.o
+
+# target to build an object file
+ImageProcessing.cpp.o:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o
+.PHONY : ImageProcessing.cpp.o
+
+ImageProcessing.i: ImageProcessing.cpp.i
+
+.PHONY : ImageProcessing.i
+
+# target to preprocess a source file
+ImageProcessing.cpp.i:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.i
+.PHONY : ImageProcessing.cpp.i
+
+ImageProcessing.s: ImageProcessing.cpp.s
+
+.PHONY : ImageProcessing.s
+
+# target to generate assembly for a file
+ImageProcessing.cpp.s:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.s
+.PHONY : ImageProcessing.cpp.s
+
+ShowImages.o: ShowImages.cpp.o
+
+.PHONY : ShowImages.o
+
+# target to build an object file
+ShowImages.cpp.o:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o
+.PHONY : ShowImages.cpp.o
+
+ShowImages.i: ShowImages.cpp.i
+
+.PHONY : ShowImages.i
+
+# target to preprocess a source file
+ShowImages.cpp.i:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.i
+.PHONY : ShowImages.cpp.i
+
+ShowImages.s: ShowImages.cpp.s
+
+.PHONY : ShowImages.s
+
+# target to generate assembly for a file
+ShowImages.cpp.s:
+	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.s
+.PHONY : ShowImages.cpp.s
+
 colorSegmentation.o: colorSegmentation.cpp.o
 
 .PHONY : colorSegmentation.o
@@ -241,6 +295,12 @@ help:
 	@echo "... disparityMap"
 	@echo "... colorSegmentation"
 	@echo "... edit_cache"
+	@echo "... ImageProcessing.o"
+	@echo "... ImageProcessing.i"
+	@echo "... ImageProcessing.s"
+	@echo "... ShowImages.o"
+	@echo "... ShowImages.i"
+	@echo "... ShowImages.s"
 	@echo "... colorSegmentation.o"
 	@echo "... colorSegmentation.i"
 	@echo "... colorSegmentation.s"

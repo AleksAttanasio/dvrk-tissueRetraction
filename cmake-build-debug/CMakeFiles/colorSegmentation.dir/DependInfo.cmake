@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/osboxes/Projects/tissueRetraction/ImageProcessing.cpp" "/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o"
+  "/home/osboxes/Projects/tissueRetraction/ShowImages.cpp" "/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o"
   "/home/osboxes/Projects/tissueRetraction/colorSegmentation.cpp" "/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

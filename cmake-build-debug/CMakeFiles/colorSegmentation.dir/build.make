@@ -70,14 +70,44 @@ CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/osboxes/Projects/tissueRetraction/colorSegmentation.cpp -o CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.s
 
+CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o: CMakeFiles/colorSegmentation.dir/flags.make
+CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o: ../ShowImages.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o -c /home/osboxes/Projects/tissueRetraction/ShowImages.cpp
+
+CMakeFiles/colorSegmentation.dir/ShowImages.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/colorSegmentation.dir/ShowImages.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/osboxes/Projects/tissueRetraction/ShowImages.cpp > CMakeFiles/colorSegmentation.dir/ShowImages.cpp.i
+
+CMakeFiles/colorSegmentation.dir/ShowImages.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/colorSegmentation.dir/ShowImages.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/osboxes/Projects/tissueRetraction/ShowImages.cpp -o CMakeFiles/colorSegmentation.dir/ShowImages.cpp.s
+
+CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o: CMakeFiles/colorSegmentation.dir/flags.make
+CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o: ../ImageProcessing.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o -c /home/osboxes/Projects/tissueRetraction/ImageProcessing.cpp
+
+CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/osboxes/Projects/tissueRetraction/ImageProcessing.cpp > CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.i
+
+CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/osboxes/Projects/tissueRetraction/ImageProcessing.cpp -o CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.s
+
 # Object files for target colorSegmentation
 colorSegmentation_OBJECTS = \
-"CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o"
+"CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o" \
+"CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o" \
+"CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o"
 
 # External object files for target colorSegmentation
 colorSegmentation_EXTERNAL_OBJECTS =
 
 colorSegmentation: CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o
+colorSegmentation: CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o
+colorSegmentation: CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o
 colorSegmentation: CMakeFiles/colorSegmentation.dir/build.make
 colorSegmentation: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_stitching3.so.3.3.1
 colorSegmentation: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_superres3.so.3.3.1
@@ -125,7 +155,7 @@ colorSegmentation: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_objdetect3.so
 colorSegmentation: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_imgproc3.so.3.3.1
 colorSegmentation: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_core3.so.3.3.1
 colorSegmentation: CMakeFiles/colorSegmentation.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable colorSegmentation"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable colorSegmentation"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/colorSegmentation.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
