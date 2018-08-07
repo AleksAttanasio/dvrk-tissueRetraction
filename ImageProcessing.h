@@ -1,0 +1,16 @@
+//
+// Created by osboxes on 8/7/18.
+//
+
+#ifndef TISSUERETRACTION_IMAGEPROCESSING_H
+#define TISSUERETRACTION_IMAGEPROCESSING_H
+
+
+
+class ImageProcessing {
+
+};
+
+
+
+#endif //TISSUERETRACTION_IMAGEPROCESSING_H
