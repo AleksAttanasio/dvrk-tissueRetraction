@@ -7,6 +7,10 @@
 #include "ShowImages.h"
 #include "ImageProcessing.h"
 #include <iostream>
+
+#define CLUSTER_K 5
+#define KMEANS_ATTEMPTS 5
+
 using namespace cv;
 using namespace std;
 
@@ -15,12 +19,12 @@ int main( )
     ImageProcessing IP;
     Mat img = imread( "resources/test_images/laparoscopy.jpg"); // Input image
     Mat equalized_img;                                          // Equalized image
-    Mat cluster_image( img.size(), img.type() );               // Image represented by clusters
+    Mat cluster_image( img.size(), img.type() );                // Image represented by clusters
     Mat samples(img.rows * img.cols, 3, CV_32F);                // Sorted pixel Mat
-    Mat labels;                                                 //
-    Mat centers;
-    int K = 5;                                                  // Number of clusters
-    int attempts = 5; // Number of executions
+    Mat labels;                                                 // Cluster labels
+    Mat centers;                                                // Centers of means
+    int K = CLUSTER_K;                                          // Number of clusters
+    int attempts = KMEANS_ATTEMPTS;                             // Number of executions
 
     imshow("Original", img);
     imshow("Equalized", IP.equalizeRGBImage(img));
@@ -40,7 +44,7 @@ int main( )
             labels,
             TermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 100, 0.01),
             attempts,
-            KMEANS_PP_CENTERS,
+            KMEANS_PP_CENTERS  ,
             centers );
 
     // Colorize clusters
