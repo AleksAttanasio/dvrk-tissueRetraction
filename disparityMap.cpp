@@ -19,8 +19,8 @@ int main() {
     Mat disp, disp8;
 
     // Loading images
-    img_left = imread("resources/test_images/test_left.png");
-    img_right = imread("resources/test_images/test_right.png");
+    img_left = imread("resources/test_images/dvrk/cap_left.png");
+    img_right = imread("resources/test_images/dvrk/cap_right.png");
 
     // Check size of images
     if ( img_right.empty() || img_left.empty()) {
@@ -28,7 +28,7 @@ int main() {
         return -1;
     }
 
-    imshow("left",img_left);
+//    imshow("left",img_left);
     imshow("right",img_right);
 
 
@@ -37,24 +37,38 @@ int main() {
     cvtColor(img_right, g_right, CV_BGR2GRAY);
 
     // Create Stereo filter
-    int numDisparities = 5;
+    int numDisparities = 6;
     int P1 = 8*numDisparities*numDisparities;
-    int P2 = 32*numDisparities*numDisparities+3000;
-    Ptr<StereoBM> sbm = StereoBM::create(0, // int numDisparities = 0
-                                         21); // int blockSize = 21
+    int P2 = 32*numDisparities*numDisparities;
+    Ptr<StereoBM> sbm = StereoBM::create(96, // int numDisparities = 0
+                                         35); // int blockSize = 21
 
     // H. Hirschmuller algorithm
-    Ptr<StereoSGBM> sgbm = StereoSGBM::create(0,    //int minDisparity /0
-                                              32,     //int numDisparities / 96
-                                              numDisparities,      //int SADWindowSize / 5
+
+    Ptr<StereoSGBM> sgbm = StereoSGBM::create(-70,      //int minDisparity /0
+                                              48,     //int numDisparities / 96
+                                              9,      //int blockSize = 3,
                                               P1,    //int P1 = 0 / 600
                                               P2,   //int P2 = 0 / 2400
                                               0,     //int disp12MaxDiff = 0 / 10
-                                              16,     //int preFilterCap = 0 / 16
-                                              2,      //int uniquenessRatio = 0 / 2
-                                              20,    //int speckleWindowSize = 0 / 20
-                                              30,     //int speckleRange = 0 / 30
-                                              true);  //bool fullDP = false / true
+                                              12,     //int preFilterCap = 0 / 16
+                                              7,      //int uniquenessRatio = 0 / 2 (range 5:15)
+                                              5,    //int speckleWindowSize = 0 / 20 (range 50:200)
+                                              1,     //int speckleRange = 0 / 30 (range 1:2)
+                                              StereoSGBM::MODE_SGBM);
+
+//    Ptr<StereoSGBM> sgbm = StereoSGBM::create(0,    //int minDisparity /0
+//                                              16,     //int numDisparities / 96
+
+//                                              numDisparities,      //int SADWindowSize / 5
+//                                              P1,    //int P1 = 0 / 600
+//                                              P2,   //int P2 = 0 / 2400
+//                                              10,     //int disp12MaxDiff = 0 / 10
+//                                              16,     //int preFilterCap = 0 / 16
+//                                              8,      //int uniquenessRatio = 0 / 2 (range 5:15)
+//                                              100,    //int speckleWindowSize = 0 / 20 (range 50:200)
+//                                              10,     //int speckleRange = 0 / 30 (range 1:2)
+//                                              true);  //bool fullDP = false / true
 
     // Applying stereo filter and normalize
     sgbm->compute(g_left, g_right, disp);
