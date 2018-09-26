@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/osboxes/Projects/tissueRetraction/cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/opt/clion-2018.2/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -77,6 +66,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/opt/clion-2018.2/bin/cmake/linux/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -135,6 +135,19 @@ disparityMap: cmake_check_build_system
 disparityMap/fast:
 	$(MAKE) -f CMakeFiles/disparityMap.dir/build.make CMakeFiles/disparityMap.dir/build
 .PHONY : disparityMap/fast
+
+#=============================================================================
+# Target rules for targets named cameraCalibration
+
+# Build rule for target.
+cameraCalibration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cameraCalibration
+.PHONY : cameraCalibration
+
+# fast build rule for target.
+cameraCalibration/fast:
+	$(MAKE) -f CMakeFiles/cameraCalibration.dir/build.make CMakeFiles/cameraCalibration.dir/build
+.PHONY : cameraCalibration/fast
 
 #=============================================================================
 # Target rules for targets named colorSegmentation
@@ -202,6 +215,33 @@ ShowImages.s: ShowImages.cpp.s
 ShowImages.cpp.s:
 	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.s
 .PHONY : ShowImages.cpp.s
+
+cameraCalibration.o: cameraCalibration.cpp.o
+
+.PHONY : cameraCalibration.o
+
+# target to build an object file
+cameraCalibration.cpp.o:
+	$(MAKE) -f CMakeFiles/cameraCalibration.dir/build.make CMakeFiles/cameraCalibration.dir/cameraCalibration.cpp.o
+.PHONY : cameraCalibration.cpp.o
+
+cameraCalibration.i: cameraCalibration.cpp.i
+
+.PHONY : cameraCalibration.i
+
+# target to preprocess a source file
+cameraCalibration.cpp.i:
+	$(MAKE) -f CMakeFiles/cameraCalibration.dir/build.make CMakeFiles/cameraCalibration.dir/cameraCalibration.cpp.i
+.PHONY : cameraCalibration.cpp.i
+
+cameraCalibration.s: cameraCalibration.cpp.s
+
+.PHONY : cameraCalibration.s
+
+# target to generate assembly for a file
+cameraCalibration.cpp.s:
+	$(MAKE) -f CMakeFiles/cameraCalibration.dir/build.make CMakeFiles/cameraCalibration.dir/cameraCalibration.cpp.s
+.PHONY : cameraCalibration.cpp.s
 
 colorSegmentation.o: colorSegmentation.cpp.o
 
@@ -290,17 +330,21 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... edit_cache"
 	@echo "... tissueRetraction"
 	@echo "... rebuild_cache"
 	@echo "... disparityMap"
+	@echo "... cameraCalibration"
 	@echo "... colorSegmentation"
-	@echo "... edit_cache"
 	@echo "... ImageProcessing.o"
 	@echo "... ImageProcessing.i"
 	@echo "... ImageProcessing.s"
 	@echo "... ShowImages.o"
 	@echo "... ShowImages.i"
 	@echo "... ShowImages.s"
+	@echo "... cameraCalibration.o"
+	@echo "... cameraCalibration.i"
+	@echo "... cameraCalibration.s"
 	@echo "... colorSegmentation.o"
 	@echo "... colorSegmentation.i"
 	@echo "... colorSegmentation.s"

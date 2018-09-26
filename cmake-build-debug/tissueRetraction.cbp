@@ -17,6 +17,16 @@
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/osboxes/Projects/tissueRetraction/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="tissueRetraction">
 				<Option output="/home/osboxes/Projects/tissueRetraction/cmake-build-debug/tissueRetraction" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/osboxes/Projects/tissueRetraction/cmake-build-debug"/>
@@ -127,8 +137,8 @@
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="colorSegmentation">
-				<Option output="/home/osboxes/Projects/tissueRetraction/cmake-build-debug/colorSegmentation" prefix_auto="0" extension_auto="0"/>
+			<Target title="cameraCalibration">
+				<Option output="/home/osboxes/Projects/tissueRetraction/cmake-build-debug/cameraCalibration" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/osboxes/Projects/tissueRetraction/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -136,6 +146,54 @@
 				<Compiler>
 					<Add directory="/opt/ros/kinetic/include/opencv-3.3.1-dev"/>
 					<Add directory="/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 cameraCalibration"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cameraCalibration/fast">
+				<Option output="/home/osboxes/Projects/tissueRetraction/cmake-build-debug/cameraCalibration" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/osboxes/Projects/tissueRetraction/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/opt/ros/kinetic/include/opencv-3.3.1-dev"/>
+					<Add directory="/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv"/>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 cameraCalibration/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="colorSegmentation">
+				<Option output="/home/osboxes/Projects/tissueRetraction/cmake-build-debug/colorSegmentation" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/osboxes/Projects/tissueRetraction/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -159,8 +217,6 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/opt/ros/kinetic/include/opencv-3.3.1-dev"/>
-					<Add directory="/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv"/>
 					<Add directory="/usr/include/c++/5"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
 					<Add directory="/usr/include/c++/5/backward"/>
@@ -172,16 +228,6 @@
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 colorSegmentation/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="/home/osboxes/Projects/tissueRetraction/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/osboxes/Projects/tissueRetraction/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -199,6 +245,9 @@
 		</Unit>
 		<Unit filename="/home/osboxes/Projects/tissueRetraction/ShowImages.h">
 			<Option target="colorSegmentation"/>
+		</Unit>
+		<Unit filename="/home/osboxes/Projects/tissueRetraction/cameraCalibration.cpp">
+			<Option target="cameraCalibration"/>
 		</Unit>
 		<Unit filename="/home/osboxes/Projects/tissueRetraction/colorSegmentation.cpp">
 			<Option target="colorSegmentation"/>

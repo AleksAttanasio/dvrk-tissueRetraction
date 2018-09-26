@@ -54,5 +54,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/tissueRetraction.dir/DependInfo.cmake"
   "CMakeFiles/disparityMap.dir/DependInfo.cmake"
+  "CMakeFiles/cameraCalibration.dir/DependInfo.cmake"
   "CMakeFiles/colorSegmentation.dir/DependInfo.cmake"
   )
