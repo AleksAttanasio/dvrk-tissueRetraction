@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(dvrk-tissueRetraction)
+
+find_package(
+	catkin REQUIRED COMPONENTS
+    roscpp
+	cv_bridge
+	image_geometry
+)
+
+include(/opt/opencv-3.4.3/build/OpenCVConfig.cmake)
+set(OpenCV_INCLUDE_DIR ${OPENCV_INCLUDE_DIR})
+
+include_directories(
+	${catkin_INCLUDE_DIRS}
+	${OpenCV_INCLUDE_DIRS}
+)
+
+add_executable(video_stream_dummy src/ros/videoStreamDummy.cpp)
+add_executable(stereo_img_reader src/ros/stereoImagesReader.cpp)
+target_link_libraries(video_stream_dummy ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(stereo_img_reader ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+
