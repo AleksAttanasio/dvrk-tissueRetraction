@@ -1,6 +1,5 @@
-/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/edit_cache.dir
 /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/tissueRetraction.dir
 /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/rebuild_cache.dir
 /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/disparityMap.dir
 /home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/cameraCalibration.dir
-/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/colorSegmentation.dir
+/home/osboxes/Projects/tissueRetraction/cmake-build-debug/CMakeFiles/edit_cache.dir
