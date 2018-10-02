@@ -12,7 +12,7 @@
 
 using namespace std;
 
-cv_bridge::CvImagePtr cv_ptr;
+cv_bridge::CvImagePtr cv_ptr (new cv_bridge::CvImage);
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg) {
 
@@ -36,9 +36,10 @@ int main(int argc, char **argv){
     image_transport::Subscriber images_sub = it.subscribe("/camera_dummy", 1, &imageCallback);
     stringstream ss;
 
-    ss << "1";
 
-    ROS_ASSERT( cv::imwrite( ss.str(),  cv_ptr->image ) );
+    cv::imwrite( "1.jpg",  cv_ptr->image);
 
+
+    ros::spin();
     return 0;
 }
