@@ -30,6 +30,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg) {
 
 int main(int argc, char **argv){
 
+    ros::init(argc, argv, "stereo_img_reader");
     ros::NodeHandle nh;
     image_transport::ImageTransport it(nh);
     image_transport::Subscriber images_sub = it.subscribe("/camera_dummy", 1, &imageCallback);
@@ -38,6 +39,6 @@ int main(int argc, char **argv){
     ss << "1";
 
     ROS_ASSERT( cv::imwrite( ss.str(),  cv_ptr->image ) );
-    
+
     return 0;
 }
