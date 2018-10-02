@@ -6,6 +6,7 @@ find_package(
     roscpp
 	cv_bridge
 	image_geometry
+    image_transport
 )
 
 include(/opt/opencv-3.4.3/build/OpenCVConfig.cmake)
