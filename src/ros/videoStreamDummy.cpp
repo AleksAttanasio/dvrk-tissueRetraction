@@ -3,6 +3,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <unistd.h>
+#include <stdio.h>
 
 // ROS Messages
 #include "std_msgs/String.h"
@@ -13,26 +16,33 @@ using namespace std;
 int main(int argc, char **argv){
 
     int pub_rate = 10;
-    std_msgs::String topic_name;
-    topic_name.data = "/camera_dummy";
-    ros::init(argc, argv, "dummies");
+    string topic_name = "/camera_dummy";
+    string path = "../resources/images/dummies_test/laparoscopy.jpg";
+
+    ros::init(argc, argv, "camera_dummy");
     ros::NodeHandle nh;
+
+    image_transport::ImageTransport it(nh);
+    image_transport::Publisher img_pub = it.advertise("camera_dummy/image", 1);
+
     cv_bridge::CvImage cv_image;
+    cv::Mat image = cv::imread("resources/images/dummies_test/dvrk_1.png", CV_LOAD_IMAGE_COLOR);
+    cv::waitKey(30);
+    sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
 
-    cv_image.image = cv::imread("../resources/images/dummies_test/dvrk.jpg",CV_LOAD_IMAGE_COLOR);
-    cv_image.encoding = "bgr8";
-    sensor_msgs::Image ros_image;
-    cv_image.toImageMsg(ros_image);
 
-    ros::Publisher pub = nh.advertise<sensor_msgs::Image>(topic_name.data, 1);
     ros::Rate loop_rate(pub_rate);
-    ROS_INFO("Publishing sample image on %s at %d", topic_name.data.c_str(), pub_rate);
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+    ROS_INFO("Publishing sample image on %s at %d Hz \nFile: %s \n CWS: %s", topic_name.c_str(), pub_rate, path.c_str(), cwd);
 
     while (nh.ok())
     {
-        pub.publish(ros_image);
+        img_pub.publish(msg);
+        ros::spinOnce();
         loop_rate.sleep();
     }
+
 
     return 0;
 }
