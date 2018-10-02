@@ -30,3 +30,5 @@
 *.exe
 *.out
 *.app
+debug.log
+CameraDummy.cpp CameraDummy.h cmake-build-debug CMakeLists.txt cpp include matlab package.xml src
