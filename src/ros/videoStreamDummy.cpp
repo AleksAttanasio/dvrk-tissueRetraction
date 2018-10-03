@@ -17,7 +17,7 @@ int main(int argc, char **argv){
 
     int pub_rate = 10;
     string topic_name = "/camera_dummy/image";
-    string path = "../resources/images/dummies_test/laparoscopy.jpg";
+    string path = "resources/images/dummies_test/laparoscopy.jpg";
 
     ros::init(argc, argv, "camera_dummy");
     ros::NodeHandle nh;
@@ -26,7 +26,7 @@ int main(int argc, char **argv){
     image_transport::Publisher img_pub = it.advertise(topic_name, 1);
 
     cv_bridge::CvImage cv_image;
-    cv::Mat image = cv::imread("resources/images/dummies_test/dvrk_1.png", CV_LOAD_IMAGE_COLOR);
+    cv::Mat image = cv::imread(path, CV_LOAD_IMAGE_COLOR);
     cv::waitKey(30);
     sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
 
