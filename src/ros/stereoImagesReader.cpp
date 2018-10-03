@@ -18,7 +18,10 @@ void imageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
 
-         cv::imshow("view", cv_bridge::toCvShare(msg, "bgr8")->image);
+         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+         cv_ptr = cv_bridge::toCvCopy(msg, "bgr8");
+//         cv_ptr.encoding = cv_bridge::toCvCopy(msg, "bgr8")->encoding;
+//         cv_ptr.header = cv_bridge::toCvCopy(msg, "bgr8")->header;
          cv::waitKey(30);
     }
     catch (cv_bridge::Exception& e) {
@@ -38,13 +41,21 @@ int main(int argc, char **argv){
     image_transport::ImageTransport it(nh);
     image_transport::Subscriber images_sub = it.subscribe("/camera_dummy/image", 1, &imageCallback);
     stringstream ss;
+    ros::Rate loop_rate(10);
 
     if(cv_ptr->image.size > 0){
 
         ROS_INFO("Image read successfully from topic %s", sub_topic_name.c_str());
     }
 
-    cv::imwrite( "1.jpg",  cv_ptr->image);
-    ros::spin();
+    while(ros::ok()){
+
+        cv::imwrite( "test.bmp",  cv_ptr->image);
+        loop_rate.sleep();
+        ros::spinOnce();
+
+    }
+
+    cv::destroyWindow("view");
     return 0;
 }
