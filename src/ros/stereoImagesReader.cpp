@@ -18,10 +18,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
 
-         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+//         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
          cv_ptr = cv_bridge::toCvCopy(msg, "bgr8");
-//         cv_ptr.encoding = cv_bridge::toCvCopy(msg, "bgr8")->encoding;
-//         cv_ptr.header = cv_bridge::toCvCopy(msg, "bgr8")->header;
          cv::waitKey(30);
     }
     catch (cv_bridge::Exception& e) {
@@ -41,8 +39,6 @@ int main(int argc, char **argv){
     // Ros node, subs and pubs initialization
     ros::init(argc, argv, "stereo_img_reader");
     ros::NodeHandle nh;
-    cv::namedWindow("view");
-    cv::startWindowThread();
     image_transport::ImageTransport it(nh);
     image_transport::Subscriber images_sub = it.subscribe("/camera_dummy/image", 1, &imageCallback);
     ros::Rate loop_rate(10);
@@ -54,16 +50,21 @@ int main(int argc, char **argv){
     while(ros::ok()){
 
         getchar(); // wait for user to type a char
+        cv::waitKey(30);
 
-        //Create new image name and save it
-        ss << "test_" << image_cnt;
-        cv::imwrite( "test.bmp",  cv_ptr->image);
-        image_cnt++;
+        if(!cv_ptr->image.empty()){
+
+            //Create new image name and save it
+            ss << "test_" << image_cnt << ".bmp";
+            cv::imwrite( ss.str().c_str(),  cv_ptr->image);
+            image_cnt++;
+            ROS_INFO("---> Image correctly saved with name: %s", ss.str().c_str());
+            ss.str(std::string());
+        }
         loop_rate.sleep();
         ros::spinOnce();
 
     }
 
-    cv::destroyWindow("view");
     return 0;
 }
