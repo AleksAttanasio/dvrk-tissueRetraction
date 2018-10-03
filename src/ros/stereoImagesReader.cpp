@@ -33,24 +33,32 @@ void imageCallback(const sensor_msgs::ImageConstPtr msg) {
 
 int main(int argc, char **argv){
 
+    // Variables
+    int image_cnt = 0;
     string sub_topic_name = "/camera_dummy/image";
+    stringstream ss;
+
+    // Ros node, subs and pubs initialization
     ros::init(argc, argv, "stereo_img_reader");
     ros::NodeHandle nh;
     cv::namedWindow("view");
     cv::startWindowThread();
     image_transport::ImageTransport it(nh);
     image_transport::Subscriber images_sub = it.subscribe("/camera_dummy/image", 1, &imageCallback);
-    stringstream ss;
     ros::Rate loop_rate(10);
 
-    if(cv_ptr->image.size > 0){
+    // If image is correctly read from topic print this
+    if(cv_ptr->image.size > 0){ ROS_INFO("Image read successfully from topic %s", sub_topic_name.c_str()); }
 
-        ROS_INFO("Image read successfully from topic %s", sub_topic_name.c_str());
-    }
-
+    // Node loop
     while(ros::ok()){
 
+        getchar(); // wait for user to type a char
+
+        //Create new image name and save it
+        ss << "test_" << image_cnt;
         cv::imwrite( "test.bmp",  cv_ptr->image);
+        image_cnt++;
         loop_rate.sleep();
         ros::spinOnce();
 
