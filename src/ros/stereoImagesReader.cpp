@@ -82,8 +82,8 @@ int main(int argc, char **argv){
             if (!cv_left_ptr->image.empty()) {
 
                 //Create new image name and save it
-                ss_left << "img_L_" << image_cnt << ".bmp";
-                ss_right << "img_R_" << image_cnt << ".bmp";
+                ss_left << "resources/stereo_pairs/img_L_" << image_cnt << ".bmp";
+                ss_right << "resources/stereo_pairs/img_R_" << image_cnt << ".bmp";
 
                 cv::imwrite(ss_left.str().c_str(), cv_left_ptr->image);
                 cv::imwrite(ss_right.str().c_str(), cv_right_ptr->image);
