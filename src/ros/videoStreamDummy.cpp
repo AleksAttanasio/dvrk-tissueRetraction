@@ -39,6 +39,7 @@ int main(int argc, char **argv){
 
     ros::Rate loop_rate(pub_rate);
 
+    // Information and confirm
     ROS_INFO("Publishing sample images at %d Hz on:\n"
              "%s\n"
              "%s\n"
@@ -50,12 +51,12 @@ int main(int argc, char **argv){
 
     while (nh.ok())
     {
+        // Publishing images on two different topics
         left_img_pub.publish(left_img_msg);
         right_img_pub.publish(right_img_msg);
         ros::spinOnce();
         loop_rate.sleep();
     }
-
 
     return 0;
 }
