@@ -12,14 +12,31 @@
 
 using namespace std;
 
-cv_bridge::CvImagePtr cv_ptr (new cv_bridge::CvImage);
+cv_bridge::CvImagePtr cv_left_ptr (new cv_bridge::CvImage);
+cv_bridge::CvImagePtr cv_right_ptr (new cv_bridge::CvImage);
 
-void imageCallback(const sensor_msgs::ImageConstPtr msg) {
+
+void rightImageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
-
+//        Visualize images
 //         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
-         cv_ptr = cv_bridge::toCvCopy(msg, "bgr8");
+        cv_right_ptr = cv_bridge::toCvCopy(msg, "bgr8");
+        cv::waitKey(30);
+    }
+    catch (cv_bridge::Exception& e) {
+
+        ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
+
+    }
+}
+
+void leftImageCallback(const sensor_msgs::ImageConstPtr msg) {
+
+    try {
+//        Visualize images
+//         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+         cv_left_ptr = cv_bridge::toCvCopy(msg, "bgr8");
          cv::waitKey(30);
     }
     catch (cv_bridge::Exception& e) {
@@ -33,22 +50,25 @@ int main(int argc, char **argv){
 
     // Variables
     int image_cnt = 0;
-    int confirm_char = 0;
-    string sub_topic_name = "/camera_dummy/image";
-    stringstream ss;
+    string left_img_sub_topic_name = "/camera_dummy/image_left";
+    string right_img_sub_topic_name = "camera_dummy/image_right";
+    stringstream ss_left;
+    stringstream ss_right;
 
     // Ros node, subs and pubs initialization
     ros::init(argc, argv, "stereo_img_reader");
     ros::NodeHandle nh;
     image_transport::ImageTransport it(nh);
-    image_transport::Subscriber images_sub = it.subscribe("/camera_dummy/image", 1, &imageCallback);
+    image_transport::Subscriber left_img_sub = it.subscribe(left_img_sub_topic_name, 1, &leftImageCallback);
+    image_transport::Subscriber right_img_sub = it.subscribe(right_img_sub_topic_name, 1, &rightImageCallback);
     ros::Rate loop_rate(10);
 
     // If image is correctly read from topic print this
-    if(cv_ptr->image.size > 0){ ROS_INFO("Image read successfully from topic %s", sub_topic_name.c_str()); }
+    if(cv_left_ptr->image.size > 0){ ROS_INFO("Image read successfully from topic %s", left_img_sub_topic_name.c_str()); }
+    if(cv_right_ptr->image.size > 0){ ROS_INFO("Image read successfully from topic %s", right_img_sub_topic_name.c_str()); }
 
     // Instruction
-    ROS_INFO("Enter ENTER and to aqcuire streo pair or \"Q\" to quit.");
+    ROS_INFO("Enter \"A\" and ENTER to aqcuire streo pair or \"Q\" to quit.");
 
     // Node loop
     while(ros::ok()){
@@ -59,16 +79,26 @@ int main(int argc, char **argv){
 
         // If button pressed is "A" then save stereo pair.
         if(entered_char == 97) {
-            if (!cv_ptr->image.empty()) {
+            if (!cv_left_ptr->image.empty()) {
 
                 //Create new image name and save it
-                ss << "test_" << image_cnt << ".bmp";
-                cv::imwrite(ss.str().c_str(), cv_ptr->image);
+                ss_left << "img_L_" << image_cnt << ".bmp";
+                ss_right << "img_R_" << image_cnt << ".bmp";
+
+                cv::imwrite(ss_left.str().c_str(), cv_left_ptr->image);
+                cv::imwrite(ss_right.str().c_str(), cv_right_ptr->image);
                 image_cnt++;
-                ROS_INFO("---> Image correctly saved with name: %s", ss.str().c_str());
-                ss.str(std::string());
+
+                ROS_INFO("---> Image correctly saved with name:\n"
+                         "%s\n"
+                         "%s\n",
+                         ss_left.str().c_str(), ss_right.str().c_str());
+
+                ss_left.str(std::string());
+                ss_right.str(std::string());
             }
         }
+
         // If button pressed is "Q" then quit routine and exit ROS while
         if (entered_char == 113){
 
