@@ -33,6 +33,7 @@ int main(int argc, char **argv){
 
     // Variables
     int image_cnt = 0;
+    int confirm_char = 0;
     string sub_topic_name = "/camera_dummy/image";
     stringstream ss;
 
@@ -46,24 +47,37 @@ int main(int argc, char **argv){
     // If image is correctly read from topic print this
     if(cv_ptr->image.size > 0){ ROS_INFO("Image read successfully from topic %s", sub_topic_name.c_str()); }
 
+    // Instruction
+    ROS_INFO("Enter ENTER and to aqcuire streo pair or \"Q\" to quit.");
+
     // Node loop
     while(ros::ok()){
 
-        getchar(); // wait for user to type a char
+        // Variables init
+        int entered_char = getchar(); // wait for user to type a char
         cv::waitKey(30);
 
-        if(!cv_ptr->image.empty()){
+        // If button pressed is "A" then save stereo pair.
+        if(entered_char == 97) {
+            if (!cv_ptr->image.empty()) {
 
-            //Create new image name and save it
-            ss << "test_" << image_cnt << ".bmp";
-            cv::imwrite( ss.str().c_str(),  cv_ptr->image);
-            image_cnt++;
-            ROS_INFO("---> Image correctly saved with name: %s", ss.str().c_str());
-            ss.str(std::string());
+                //Create new image name and save it
+                ss << "test_" << image_cnt << ".bmp";
+                cv::imwrite(ss.str().c_str(), cv_ptr->image);
+                image_cnt++;
+                ROS_INFO("---> Image correctly saved with name: %s", ss.str().c_str());
+                ss.str(std::string());
+            }
         }
+        // If button pressed is "Q" then quit routine and exit ROS while
+        if (entered_char == 113){
+
+            ROS_INFO("QUITTING...");
+            break;
+        }
+
         loop_rate.sleep();
         ros::spinOnce();
-
     }
 
     return 0;
