@@ -20,7 +20,7 @@ void rightImageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
 //        Visualize images
-//         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+        cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
         cv_right_ptr = cv_bridge::toCvCopy(msg, "bgr8");
         cv::waitKey(30);
     }
@@ -35,7 +35,7 @@ void leftImageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
 //        Visualize images
-//         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
          cv_left_ptr = cv_bridge::toCvCopy(msg, "bgr8");
          cv::waitKey(30);
     }
