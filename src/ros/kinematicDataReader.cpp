@@ -7,6 +7,9 @@
 #include <ros/ros.h>
 #include <iostream>
 #include <fstream>
+#include <cv_bridge/cv_bridge.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 // ROS Messages
 #include <sensor_msgs/JointState.h>
@@ -40,22 +43,34 @@ int main(int argc, char **argv){
 
     ros::Subscriber kin_data_sub = nh.subscribe(kin_data_source_topic_name, 1, &kinDataCallback);
 
+    ROS_INFO("To start record a trial press \"A\" and ENTER. To quit press \"Q\".");
+
     while(ros::ok()){
 
-        ss << sample_count;
+        int entered_char = getchar(); // wait for user to type a char
+        cv::waitKey(30);
+        if(entered_char == 97){
 
-        collection_txt << ss.str().c_str() << "\t" <<
-            joint_values[0] << "\t" <<
-            joint_values[1] << "\n";
+            ss << sample_count;
 
-        sample_count++;
-        ss.str(std::string());
+            collection_txt << ss.str().c_str() << "\t" <<
+                           joint_values[0] << "\t" <<
+                           joint_values[1] << "\n";
+
+            sample_count++;
+            ss.str(std::string());
+
+        }
+
+        if (entered_char == 113){
+
+            ROS_INFO("*** TRIAL TERMINATED: %d samples were recorded.", sample_count);
+            break;
+        }
 
         ros::spinOnce();
 
     }
-
-    ROS_INFO("*** TRIAL TERMINATED: %d samples were recorded.", sample_count);
 
     return 0;
 
