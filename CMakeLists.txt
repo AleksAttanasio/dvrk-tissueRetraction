@@ -22,6 +22,6 @@ add_executable(stereo_img_reader src/ros/stereoImagesReader.cpp)
 add_executable(kinematic_data_reader src/ros/kinematicDataReader.cpp)
 target_link_libraries(video_stream_dummy ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(stereo_img_reader ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
-target_link_libraries(stereo_img_reader ${catkin_LIBRARIES})
+target_link_libraries(kinematic_data_reader ${catkin_LIBRARIES})
 
 
