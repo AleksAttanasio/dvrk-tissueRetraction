@@ -43,6 +43,8 @@ int main(int argc, char **argv){
 
     ros::Subscriber kin_data_sub = nh.subscribe(kin_data_source_topic_name, 1, &kinDataCallback);
 
+    ros::Rate rate(30);
+
     ROS_INFO("To start record a trial press \"A\" and ENTER. To quit press \"Q\".");
 
     while(ros::ok()){
@@ -55,16 +57,31 @@ int main(int argc, char **argv){
 
             collection_txt << ss.str().c_str() << "\t" <<
                            joint_values[0] << "\t" <<
-                           joint_values[1] << "\n";
+                           joint_values[1] << "\t" <<
+                           joint_values[2] << "\t" <<
+                           joint_values[3] << "\t" <<
+                           joint_values[4] << "\t" <<
+                           joint_values[5] << "\t" <<
+                           joint_values[6] << "\n";
+            
+            cout << ss.str().c_str() << "\t" <<
+                 joint_values[0] << "\t" <<
+                 joint_values[1] << "\t" <<
+                 joint_values[2] << "\t" <<
+                 joint_values[3] << "\t" <<
+                 joint_values[4] << "\t" <<
+                 joint_values[5] << "\t" <<
+                 joint_values[6] << "\n";
 
             sample_count++;
             ss.str(std::string());
-
+            rate.sleep();
         }
 
         if (entered_char == 113){
 
             ROS_INFO("*** TRIAL TERMINATED: %d samples were recorded.", sample_count);
+            collection_txt.close();
             break;
         }
 
