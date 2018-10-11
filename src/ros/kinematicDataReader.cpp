@@ -48,6 +48,7 @@ void kinDataCallback(const sensor_msgs::JointState msg){
 int main(int argc, char **argv){
 
     int sample_count = 0;
+    int interval_sample_print = 20;
     string node_name = "kinematic_data_reader";
     string kin_data_source_topic_name = "/dvrk/PSM1/io/joint_position";
     ofstream collection_txt;
@@ -78,9 +79,12 @@ int main(int argc, char **argv){
 
         if(keyHit() == 1){
 
-            printw("---> STARTED NEW RECORDING SESSION");
+            printw("---> STARTED NEW RECORDING SESSION\n");
 
             while(keyHit() != 0) {
+
+                // Output number of samples recorded with interval given by interval_sample_print
+                if(sample_count % interval_sample_print == 0) {printw("Recorded: %d samples\n", sample_count);}
 
                 ss << sample_count;
 
@@ -104,6 +108,7 @@ int main(int argc, char **argv){
 
             ROS_INFO("*** TRIAL TERMINATED: %d samples were recorded.", sample_count);
             collection_txt.close();
+            sleep(5);
             endwin();
             break;
         }
