@@ -57,7 +57,7 @@ int main(int argc, char **argv){
 
     // Variable initialization
     int sample_count = 0;
-    int interval_sample_print = 20;
+    int interval_sample_print = 30;
     string node_name = "kinematic_data_reader";
     string kin_data_source_topic_name = "/dvrk/PSM1/io/joint_position";
     char file_name[100];
@@ -69,8 +69,12 @@ int main(int argc, char **argv){
 
         printw("Enter now the file name to save your trial. NOTE: the suggested format is <file_name> + \".txt\"\n");
         getstr(file_name);
+
+        if (file_name[0] == '\0');{
+            printw("The file name must be defined!\n");
+        }
     }while(file_name[0] == '\0');
-    
+
     collection_txt.open(file_name);
 
     // Reset keyboard settings
