@@ -10,12 +10,28 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <curses.h>
 
 // ROS Messages
 #include <sensor_msgs/JointState.h>
 using namespace std;
 
 double joint_values[7] ={0, 0, 0, 0, 0, 0, 0};
+
+int keyHit(void)
+{
+    int ch = getch();
+
+    // If "Q" pressed (113)
+    if (ch == 113) {
+        ungetch(ch);
+        return 0;
+    }
+    // If "A" pressed (97)
+    else if (ch == 97){
+        return 1;
+    }
+}
 
 void kinDataCallback(const sensor_msgs::JointState msg){
 
@@ -38,6 +54,12 @@ int main(int argc, char **argv){
     stringstream ss;
     collection_txt.open("trial_0.txt");
 
+    initscr();
+    cbreak();
+    noecho();
+    nodelay(stdscr, TRUE);
+    scrollok(stdscr, TRUE);
+
     ros::init(argc, argv, node_name);
     ros::NodeHandle nh;
 
@@ -45,48 +67,48 @@ int main(int argc, char **argv){
 
     ros::Rate rate(30);
 
-    ROS_INFO("To start record a trial press \"A\" and ENTER. To quit press \"Q\".");
+    sleep(1);
+
+    printw("**** KINEMATIC DATA RECORDER ****\n"
+           "To start record a trial press \"A\". To quit press \"Q\". Trials will be saved automatically once started. \n");
 
     while(ros::ok()){
 
-        int entered_char = getchar(); // wait for user to type a char
-        cv::waitKey(30);
-        if(entered_char == 97){
+        sleep(1);
 
-            ss << sample_count;
+        if(keyHit() == 1){
 
-            collection_txt << ss.str().c_str() << "\t" <<
-                           joint_values[0] << "\t" <<
-                           joint_values[1] << "\t" <<
-                           joint_values[2] << "\t" <<
-                           joint_values[3] << "\t" <<
-                           joint_values[4] << "\t" <<
-                           joint_values[5] << "\t" <<
-                           joint_values[6] << "\n";
-            
-            cout << ss.str().c_str() << "\t" <<
-                 joint_values[0] << "\t" <<
-                 joint_values[1] << "\t" <<
-                 joint_values[2] << "\t" <<
-                 joint_values[3] << "\t" <<
-                 joint_values[4] << "\t" <<
-                 joint_values[5] << "\t" <<
-                 joint_values[6] << "\n";
+            printw("---> STARTED NEW RECORDING SESSION");
 
-            sample_count++;
-            ss.str(std::string());
-            rate.sleep();
+            while(keyHit() != 0) {
+
+                ss << sample_count;
+
+                collection_txt << ss.str().c_str() << "\t" <<
+                               joint_values[0] << "\t" <<
+                               joint_values[1] << "\t" <<
+                               joint_values[2] << "\t" <<
+                               joint_values[3] << "\t" <<
+                               joint_values[4] << "\t" <<
+                               joint_values[5] << "\t" <<
+                               joint_values[6] << "\n";
+
+                sample_count++;
+                ss.str(std::string());
+                ros::spinOnce();
+                rate.sleep();
+            }
         }
 
-        if (entered_char == 113){
+        if (keyHit() == 0){
 
             ROS_INFO("*** TRIAL TERMINATED: %d samples were recorded.", sample_count);
             collection_txt.close();
+            endwin();
             break;
         }
 
         ros::spinOnce();
-
     }
 
     return 0;
