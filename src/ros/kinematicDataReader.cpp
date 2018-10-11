@@ -65,9 +65,12 @@ int main(int argc, char **argv){
     stringstream ss;
 
     // Ask the user the name of the file he wants to print on
-    printw("Enter now the file name to save your trial. NOTE: the suggested format is <file_name> + \".txt\"\n");
-    getstr(file_name);
+    do{
 
+        printw("Enter now the file name to save your trial. NOTE: the suggested format is <file_name> + \".txt\"\n");
+        getstr(file_name);
+    }while(file_name[0] == '\0');
+    
     collection_txt.open(file_name);
 
     // Reset keyboard settings
