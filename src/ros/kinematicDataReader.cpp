@@ -30,6 +30,7 @@ int keyHit(void){
     else if (ch == 97){
         return 1;
     }
+    else{ return 2; }
 }
 
 void kinDataCallback(const sensor_msgs::JointState msg){
@@ -49,31 +50,47 @@ int main(int argc, char **argv){
     initscr();
     nocbreak();
     echo();
+    start_color();
+
+    // Color pairs initialization
+    init_pair(1, COLOR_BLACK, COLOR_RED);
+    init_pair(2, COLOR_BLACK, COLOR_GREEN);
+    init_pair(3, COLOR_BLACK, COLOR_CYAN);
 
     // Welcome message
+    attron(COLOR_PAIR(3));
     printw("**** KINEMATIC DATA RECORDER ****\n");
+    attroff(COLOR_PAIR(3));
 
     // Variable initialization
-    int sample_count = 0;
-    int interval_sample_print = 30;
-    string node_name = "kinematic_data_reader";
-    string kin_data_source_topic_name = "/dvrk/PSM1/io/joint_position";
-    char file_name[100] = "";
-    ofstream collection_txt;
-    stringstream ss;
+    int sample_count = 0;                                               // number of samples
+    int interval_sample_print = 30;                                     // interval to print number of recorded samples
+    string node_name = "kinematic_data_reader";                         // name of ROS node
+    string kin_data_source_topic_name = "/dvrk/PSM1/io/joint_position"; // name of ROS topic source of joint position
+    char cwd[1024];                                                     // working directory
+    char file_name[100] = "";                                           // name of the file where to save kinematic data
+    ofstream collection_txt;                                            // file
+    stringstream ss;                                                    // string stream for samples
+    getcwd(cwd, sizeof(cwd));                                           // gettin the working directory
 
     // Ask the user the name of the file he wants to print on
     do{
 
         printw("Enter now the file name to save your trial. NOTE: the suggested format is <file_name> + \".txt\"\n");
         getstr(file_name);
-        
+
         if (file_name[0] == '\0'){
+            attron(COLOR_PAIR(1));
             printw("The file name must be defined!\n");
+            attroff(COLOR_PAIR(1));
         }
 
     }while(file_name[0] == '\0');
 
+    attron(COLOR_PAIR(2));
+    printw("Your trial will be saved as:");
+    attroff(COLOR_PAIR(2));
+    printw(" %s\n", file_name);
     collection_txt.open(file_name);
 
     // Reset keyboard settings
@@ -87,7 +104,6 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
     ros::Subscriber kin_data_sub = nh.subscribe(kin_data_source_topic_name, 1, &kinDataCallback);
     ros::Rate rate(30);
-    sleep(1);
 
     printw("To start record a trial press \"A\". To quit press \"Q\". Trials will be saved automatically once finished. \n");
 
@@ -122,16 +138,22 @@ int main(int argc, char **argv){
                 ros::spinOnce();
                 rate.sleep();
             }
+            attron(COLOR_PAIR(2));
+            printw("*** TRIAL TERMINATED: %d samples were recorded.Press Q again to close.", sample_count);
+            attroff(COLOR_PAIR(2));
+
         }
 
         // If user press "Q"
         if (keyHit() == 0){
+            
+            int entered_char = getchar();
+            if(entered_char == 113) {
+                collection_txt.close();
+                endwin();
+                break;
+            }
 
-            ROS_INFO("*** TRIAL TERMINATED: %d samples were recorded.", sample_count);
-            collection_txt.close();
-            sleep(5);
-            endwin();
-            break;
         }
 
         ros::spinOnce();
