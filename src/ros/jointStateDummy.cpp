@@ -19,5 +19,27 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
     ros::Publisher kin_data_sub = nh.advertise<sensor_msgs::JointState>(topic_name, 1);
     ros::Rate rate(30);
+    double raw_joint_pos[7] = {0, 0, 0, 0, 0, 0, 0};
 
+    sensor_msgs::JointState joint_msg = sensor_msgs::JointState();
+
+    while(ros::ok()){
+
+        vector<double> joint_pos(raw_joint_pos, raw_joint_pos+7);
+        joint_msg.position = joint_pos;
+        kin_data_sub.publish(joint_msg);
+
+        raw_joint_pos[0] = raw_joint_pos[0] + 0.1;
+        raw_joint_pos[1] = raw_joint_pos[1] + 0.2;
+        raw_joint_pos[2] = raw_joint_pos[2] + 0.3;
+        raw_joint_pos[3] = raw_joint_pos[3] + 0.4;
+        raw_joint_pos[4] = raw_joint_pos[4] + 0.5;
+        raw_joint_pos[5] = raw_joint_pos[5] + 0.6;
+        raw_joint_pos[6] = raw_joint_pos[6] + 0.7;
+
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    return 0;
 }
