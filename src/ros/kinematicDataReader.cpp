@@ -56,6 +56,7 @@ int main(int argc, char **argv){
     init_pair(1, COLOR_BLACK, COLOR_RED);
     init_pair(2, COLOR_BLACK, COLOR_GREEN);
     init_pair(3, COLOR_BLACK, COLOR_CYAN);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 
     // Welcome message
     attron(COLOR_PAIR(3));
@@ -90,7 +91,7 @@ int main(int argc, char **argv){
     attron(COLOR_PAIR(2));
     printw("Your trial will be saved as:");
     attroff(COLOR_PAIR(2));
-    printw(" %s\n", file_name);
+    printw(" %s/%s\n",cwd, file_name);
     collection_txt.open(file_name);
 
     // Reset keyboard settings
@@ -114,7 +115,10 @@ int main(int argc, char **argv){
         // If user pressed "A" button
         if(keyHit() == 1){
 
+            attron(COLOR_PAIR(4));
             printw("---> STARTED NEW RECORDING SESSION\n");
+            attroff(COLOR_PAIR(4));
+
 
             while(keyHit() != 0) {
 
