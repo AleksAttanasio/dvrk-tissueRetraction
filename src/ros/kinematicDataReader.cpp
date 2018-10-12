@@ -72,7 +72,7 @@ int main(int argc, char **argv){
     char file_name[100] = "";                                           // name of the file where to save kinematic data
     ofstream collection_txt;                                            // file
     stringstream ss;                                                    // string stream for samples
-    getcwd(cwd, sizeof(cwd));                                           // gettin the working directory
+    getcwd(cwd, sizeof(cwd));                                           // getting the working directory
 
     // Ask the user the name of the file he wants to print on
     do{
@@ -142,6 +142,7 @@ int main(int argc, char **argv){
                 ros::spinOnce();
                 rate.sleep();
             }
+
             attron(COLOR_PAIR(2));
             printw("*** TRIAL TERMINATED: %d samples were recorded.Press Q again to close.", sample_count);
             attroff(COLOR_PAIR(2));
@@ -150,9 +151,11 @@ int main(int argc, char **argv){
 
         // If user press "Q"
         if (keyHit() == 0){
-            
+
+            // Ask for confirm to close the window
             int entered_char = getchar();
             if(entered_char == 113) {
+                // close file and window
                 collection_txt.close();
                 endwin();
                 break;
