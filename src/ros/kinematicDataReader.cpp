@@ -18,8 +18,7 @@ using namespace std;
 
 double joint_values[7] ={0, 0, 0, 0, 0, 0, 0};
 
-int keyHit(void)
-{
+int keyHit(void){
     int ch = getch();
 
     // If "Q" pressed (113)
@@ -44,7 +43,6 @@ void kinDataCallback(const sensor_msgs::JointState msg){
     joint_values[6] = msg.position[6];
 }
 
-
 int main(int argc, char **argv){
 
     // initialize window
@@ -60,7 +58,7 @@ int main(int argc, char **argv){
     int interval_sample_print = 30;
     string node_name = "kinematic_data_reader";
     string kin_data_source_topic_name = "/dvrk/PSM1/io/joint_position";
-    char file_name[100];
+    char file_name[100] = "";
     ofstream collection_txt;
     stringstream ss;
 
@@ -69,10 +67,11 @@ int main(int argc, char **argv){
 
         printw("Enter now the file name to save your trial. NOTE: the suggested format is <file_name> + \".txt\"\n");
         getstr(file_name);
-
-        if (file_name[0] == '\0');{
+        
+        if (file_name[0] == '\0'){
             printw("The file name must be defined!\n");
         }
+
     }while(file_name[0] == '\0');
 
     collection_txt.open(file_name);
