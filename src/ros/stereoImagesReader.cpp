@@ -20,7 +20,7 @@ void rightImageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
 //        Visualize images
-        cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+        cv::imshow("Right View", cv_bridge::toCvCopy(msg, "bgr8")->image);
         cv_right_ptr = cv_bridge::toCvCopy(msg, "bgr8");
         cv::waitKey(30);
     }
@@ -35,7 +35,7 @@ void leftImageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
 //        Visualize images
-         cv::imshow("view", cv_bridge::toCvCopy(msg, "bgr8")->image);
+         cv::imshow("Left View", cv_bridge::toCvCopy(msg, "bgr8")->image);
          cv_left_ptr = cv_bridge::toCvCopy(msg, "bgr8");
          cv::waitKey(30);
     }
@@ -73,6 +73,9 @@ int main(int argc, char **argv){
     // Node loop
     while(ros::ok()){
 
+
+
+
         // Variables init
         int entered_char = getchar(); // wait for user to type a char
         cv::waitKey(30);
@@ -82,8 +85,8 @@ int main(int argc, char **argv){
             if (!cv_left_ptr->image.empty()) {
 
                 //Create new image name and save it
-                ss_left << "resources/stereo_pairs/img_L_" << image_cnt << ".bmp";
-                ss_right << "resources/stereo_pairs/img_R_" << image_cnt << ".bmp";
+                ss_left << "resources/stereo_pairs/img_L_" << image_cnt << ".jpeg";
+                ss_right << "resources/stereo_pairs/img_R_" << image_cnt << ".jpeg";
 
                 cv::imwrite(ss_left.str().c_str(), cv_left_ptr->image);
                 cv::imwrite(ss_right.str().c_str(), cv_right_ptr->image);
@@ -91,7 +94,7 @@ int main(int argc, char **argv){
 
                 ROS_INFO("---> Image correctly saved with name:\n"
                          "%s\n"
-                         "%s\n",
+                         "%s\n --> Press A to acquire a new pair or Q to quit.",
                          ss_left.str().c_str(), ss_right.str().c_str());
 
                 ss_left.str(std::string());
