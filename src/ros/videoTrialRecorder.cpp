@@ -13,6 +13,7 @@
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <curses.h>
+#include <sys/stat.h>
 
 // Namespaces
 using namespace std;
@@ -100,7 +101,6 @@ int main(int argc, char **argv){
 
         printw("Your trials will be saved in %s/resources/trials. Create a sub-folder in here to store images inside.\n\n", cwd);
         printw("Enter now the name of the sub-directory where to save your trial. NOTE: images will be saved in %s with name L_<number_of_sample>.jpeg and R_<sample_number>.jpeg\n", cwd);
-        printw("Otherwise, press Q to close.");
         getstr(folder_name);
 
         if (folder_name[0] == '\0'){
@@ -112,6 +112,7 @@ int main(int argc, char **argv){
     }while(folder_name[0] == '\0');
 
     path << cwd << "/resources/trials/" << folder_name;
+    mkdir(path.str().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
     attron(COLOR_PAIR(2));
     printw("Your trial will be saved in:");
