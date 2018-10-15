@@ -128,13 +128,13 @@ int main(int argc, char **argv){
                 // Save joint_values[]
                 ss << sample_count;
 
-                collection_txt << ss.str().c_str() << "\t" <<
-                               joint_values[0] << "\t" <<
-                               joint_values[1] << "\t" <<
-                               joint_values[2] << "\t" <<
-                               joint_values[3] << "\t" <<
-                               joint_values[4] << "\t" <<
-                               joint_values[5] << "\t" <<
+                collection_txt << fixed << setprecision(7) << ss.str().c_str() << "\t\t" <<
+                               joint_values[0] << "\t\t" <<
+                               joint_values[1] << "\t\t" <<
+                               joint_values[2] << "\t\t" <<
+                               joint_values[3] << "\t\t" <<
+                               joint_values[4] << "\t\t" <<
+                               joint_values[5] << "\t\t" <<
                                joint_values[6] << "\n";
 
                 sample_count++;
