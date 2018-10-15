@@ -33,7 +33,7 @@ target_link_libraries(stereo_img_reader ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(kinematic_data_reader ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
 target_link_libraries(test_key ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
 target_link_libraries(joint_state_dummy ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
-target_link_libraries(video_trial_recorder ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(video_trial_recorder ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
 
 
 
