@@ -29,13 +29,13 @@ int main(int argc, char **argv){
         joint_msg.position = joint_pos;
         kin_data_sub.publish(joint_msg);
 
-        raw_joint_pos[0] = raw_joint_pos[0] + 0.123;
-        raw_joint_pos[1] = raw_joint_pos[1] + 0.245;
-        raw_joint_pos[2] = raw_joint_pos[2] + 0.345;
-        raw_joint_pos[3] = raw_joint_pos[3] + 0.123;
-        raw_joint_pos[4] = raw_joint_pos[4] + 0.123;
-        raw_joint_pos[5] = raw_joint_pos[5] + 0.345;
-        raw_joint_pos[6] = raw_joint_pos[6] + 0.123;
+        raw_joint_pos[0] = raw_joint_pos[0] + 0.123123;
+        raw_joint_pos[1] = raw_joint_pos[1] + 0.245245;
+        raw_joint_pos[2] = raw_joint_pos[2] + 0.345345;
+        raw_joint_pos[3] = raw_joint_pos[3] + 0.123123;
+        raw_joint_pos[4] = raw_joint_pos[4] + 0.123123;
+        raw_joint_pos[5] = raw_joint_pos[5] + 0.345345;
+        raw_joint_pos[6] = raw_joint_pos[6] + 0.123123;
 
         ros::spinOnce();
         rate.sleep();
