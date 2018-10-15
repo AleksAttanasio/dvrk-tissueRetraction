@@ -15,7 +15,6 @@ using namespace std;
 cv_bridge::CvImagePtr cv_left_ptr (new cv_bridge::CvImage);
 cv_bridge::CvImagePtr cv_right_ptr (new cv_bridge::CvImage);
 
-
 void rightImageCallback(const sensor_msgs::ImageConstPtr msg) {
 
     try {
@@ -68,7 +67,7 @@ int main(int argc, char **argv){
     if(cv_right_ptr->image.size > 0){ ROS_INFO("Image read successfully from topic %s", right_img_sub_topic_name.c_str()); }
 
     // Instruction
-    ROS_INFO("Enter \"A\" and ENTER to aqcuire streo pair or \"Q\" to quit.");
+    ROS_INFO("Enter \"A\" and ENTER to acquire streo pair or \"Q\" to quit.");
 
     // Node loop
     while(ros::ok()){
