@@ -21,7 +21,7 @@ int main(int argc, char **argv){
     string node_name = "camera_dummy";
     string left_camera_topic_name = "/camera_dummy/image_left";
     string right_camera_topic_name = "/camera_dummy/image_right";
-    string left_img_path = "resources/images/dummies_test/laparoscopy.jpg";
+    string left_img_path = "resources/images/dummies_test/dvrk_2.png";
     string right_img_path = "resources/images/dummies_test/tree.jpg";
 
     ros::init(argc, argv, node_name);
@@ -46,8 +46,8 @@ int main(int argc, char **argv){
              "Image Right (R): %s\n"
              "Image Left (L): %s\n"
              "CWS: %s\n",
-             pub_rate, left_camera_topic_name.c_str(), right_camera_topic_name.c_str() , left_img_path.c_str(),
-             right_img_path.c_str(), cwd);
+             pub_rate, left_camera_topic_name.c_str(), right_camera_topic_name.c_str() , right_img_path.c_str(),
+             left_img_path.c_str(), cwd);
 
     while (nh.ok())
     {
