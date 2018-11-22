@@ -9,7 +9,7 @@ import time
 import os
 import cv2
 from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, JointState
 from cv_bridge import CvBridge, CvBridgeError
 import dvrk_gui_struct
 
@@ -18,17 +18,21 @@ class dvrKTrialRec(QtGui.QMainWindow, dvrk_gui_struct.Ui_MainFrame):
     
     def __init__(self, parent=None):
         super(dvrKTrialRec, self).__init__(parent)
-        self.cv_image = 0
+        self.joint_values = 0
         self.setupUi(self)
-        self.br = CvBridge()
         self.rec_button.clicked.connect(self.record_trial)
 
+
         rospy.init_node('dvrk_gui', anonymous=True)
-        self.left_camera_sub = rospy.Subscriber("/camera_dummy/image_left", Image, self.leftCameraCallback)
+        self.kinematics_sub = rospy.Subscriber("/dvrk/PSM1/io/joint_position", JointState, self.kinematicDataCallback)
 
     def record_trial(self):
-        bashCommand = "roscore"
-        os.system(bashCommand)
+        print self.joint_values
+
+    
+    def kinematicDataCallback(self, msg):
+        joint_values = msg.position[1]
+
 
     def leftCameraCallback(self, msg):
         self.cv_image = self.br.imgmsg_to_cv2(msg, "bgr8")
