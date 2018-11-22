@@ -1,0 +1,5 @@
+<launch>
+ <node pkg="rosbag" type="record" output='screen' name="rosbag_record_cam"
+       args="-o $(find dvrk-tissueRetraction)/trials/trial /camera_dummy/image_left /camera_dummy/image_right" />
+</launch>
+
