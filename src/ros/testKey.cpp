@@ -20,29 +20,10 @@ int kbhit(void)
 
 int main(int argc, char **argv)
 {
-    initscr();
-
-    cbreak();
-    noecho();
-    nodelay(stdscr, TRUE);
-    scrollok(stdscr, TRUE);
-    sleep(1);
-    
-    int n = 0;
-    while (true) {
-        if (kbhit() == 1) {
-            printw("REGISTRO COSE DIO PORCO");
-            while(kbhit() != 0){
-                printw("DIOMERDA CAINO %d\n", n);
-                refresh();
-            }
-        } else if (kbhit() == 0){
-            printw("No key pressed yet...\n");
-            refresh();
-//            sleep(1);
-            printw("CLOSING");
-            endwin();
-            break;
-        }
+    const int dir_err = mkdir("foo", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    if (-1 == dir_err)
+    {
+        printf("Error creating directory!n");
+        exit(1);
     }
 }
