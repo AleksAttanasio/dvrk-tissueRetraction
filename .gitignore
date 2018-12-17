@@ -43,3 +43,6 @@ CTestTestfile.cmake
 
 
 trials/
+matlab/video_frame_sgmt/videos
+
+*.asv
