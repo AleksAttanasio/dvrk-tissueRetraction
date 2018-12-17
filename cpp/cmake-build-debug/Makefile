@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/osboxes/Projects/tissueRetraction/cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/opt/clion-2018.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/opt/clion-2018.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -149,73 +149,6 @@ cameraCalibration/fast:
 	$(MAKE) -f CMakeFiles/cameraCalibration.dir/build.make CMakeFiles/cameraCalibration.dir/build
 .PHONY : cameraCalibration/fast
 
-#=============================================================================
-# Target rules for targets named colorSegmentation
-
-# Build rule for target.
-colorSegmentation: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 colorSegmentation
-.PHONY : colorSegmentation
-
-# fast build rule for target.
-colorSegmentation/fast:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/build
-.PHONY : colorSegmentation/fast
-
-ImageProcessing.o: ImageProcessing.cpp.o
-
-.PHONY : ImageProcessing.o
-
-# target to build an object file
-ImageProcessing.cpp.o:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o
-.PHONY : ImageProcessing.cpp.o
-
-ImageProcessing.i: ImageProcessing.cpp.i
-
-.PHONY : ImageProcessing.i
-
-# target to preprocess a source file
-ImageProcessing.cpp.i:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.i
-.PHONY : ImageProcessing.cpp.i
-
-ImageProcessing.s: ImageProcessing.cpp.s
-
-.PHONY : ImageProcessing.s
-
-# target to generate assembly for a file
-ImageProcessing.cpp.s:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.s
-.PHONY : ImageProcessing.cpp.s
-
-ShowImages.o: ShowImages.cpp.o
-
-.PHONY : ShowImages.o
-
-# target to build an object file
-ShowImages.cpp.o:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o
-.PHONY : ShowImages.cpp.o
-
-ShowImages.i: ShowImages.cpp.i
-
-.PHONY : ShowImages.i
-
-# target to preprocess a source file
-ShowImages.cpp.i:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.i
-.PHONY : ShowImages.cpp.i
-
-ShowImages.s: ShowImages.cpp.s
-
-.PHONY : ShowImages.s
-
-# target to generate assembly for a file
-ShowImages.cpp.s:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/ShowImages.cpp.s
-.PHONY : ShowImages.cpp.s
-
 cameraCalibration.o: cameraCalibration.cpp.o
 
 .PHONY : cameraCalibration.o
@@ -242,33 +175,6 @@ cameraCalibration.s: cameraCalibration.cpp.s
 cameraCalibration.cpp.s:
 	$(MAKE) -f CMakeFiles/cameraCalibration.dir/build.make CMakeFiles/cameraCalibration.dir/cameraCalibration.cpp.s
 .PHONY : cameraCalibration.cpp.s
-
-colorSegmentation.o: colorSegmentation.cpp.o
-
-.PHONY : colorSegmentation.o
-
-# target to build an object file
-colorSegmentation.cpp.o:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o
-.PHONY : colorSegmentation.cpp.o
-
-colorSegmentation.i: colorSegmentation.cpp.i
-
-.PHONY : colorSegmentation.i
-
-# target to preprocess a source file
-colorSegmentation.cpp.i:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.i
-.PHONY : colorSegmentation.cpp.i
-
-colorSegmentation.s: colorSegmentation.cpp.s
-
-.PHONY : colorSegmentation.s
-
-# target to generate assembly for a file
-colorSegmentation.cpp.s:
-	$(MAKE) -f CMakeFiles/colorSegmentation.dir/build.make CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.s
-.PHONY : colorSegmentation.cpp.s
 
 disparityMap.o: disparityMap.cpp.o
 
@@ -330,24 +236,14 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... tissueRetraction"
 	@echo "... rebuild_cache"
 	@echo "... disparityMap"
 	@echo "... cameraCalibration"
-	@echo "... colorSegmentation"
-	@echo "... ImageProcessing.o"
-	@echo "... ImageProcessing.i"
-	@echo "... ImageProcessing.s"
-	@echo "... ShowImages.o"
-	@echo "... ShowImages.i"
-	@echo "... ShowImages.s"
+	@echo "... edit_cache"
 	@echo "... cameraCalibration.o"
 	@echo "... cameraCalibration.i"
 	@echo "... cameraCalibration.s"
-	@echo "... colorSegmentation.o"
-	@echo "... colorSegmentation.i"
-	@echo "... colorSegmentation.s"
 	@echo "... disparityMap.o"
 	@echo "... disparityMap.i"
 	@echo "... disparityMap.s"

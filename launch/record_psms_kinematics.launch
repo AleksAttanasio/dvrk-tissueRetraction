@@ -1,0 +1,14 @@
+<launch>
+ <node pkg="rosbag" type="record" output='screen' name="rosbag_record_kinematics"
+       args="-o $(find dvrk-tissueRetraction)/trials/trial 
+		/dvrk/PSM1/state_jaw_current
+		/dvrk/PSM1/state_jaw_desired
+		/dvrk/PSM1/state_joint_current
+		/dvrk/PSM1/state_joint_desired
+		/dvrk/PSM2/state_jaw_current
+		/dvrk/PSM2/state_jaw_desired
+		/dvrk/PSM2/state_joint_current
+		/dvrk/PSM2/state_joint_desired
+		/dvrk/footpedals/coag" />
+</launch>
+
