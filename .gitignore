@@ -44,5 +44,9 @@ CTestTestfile.cmake
 
 trials/
 matlab/video_frame_sgmt/videos
+.idea
+resources/bags
+scripts/*.bag
+scripts/bags/*.bag
 
 *.asv
