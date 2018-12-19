@@ -24,18 +24,20 @@ include_directories(
 add_executable(video_stream_dummy src/ros/videoStreamDummy.cpp)
 add_executable(stereo_img_reader src/ros/stereoImagesReader.cpp)
 add_executable(kinematic_data_reader src/ros/kinematicDataReader.cpp)
-add_executable(test_key src/ros/testKey.cpp)
+#add_executable(test_key src/ros/testKey.cpp)
 add_executable(joint_state_dummy src/ros/jointStateDummy.cpp)
 add_executable(video_trial_recorder src/ros/videoTrialRecorder.cpp)
-add_executable(depth_map_eval src/ros/depthMapEval.cpp)
+#add_executable(depth_map_eval src/ros/depthMapEval.cpp)
 
 target_link_libraries(video_stream_dummy ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(stereo_img_reader ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(kinematic_data_reader ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
-target_link_libraries(test_key ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
+#target_link_libraries(test_key ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
 target_link_libraries(joint_state_dummy ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
 target_link_libraries(video_trial_recorder ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
-target_link_libraries(depth_map_eval ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+#target_link_libraries(depth_map_eval ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+#target_link_libraries(video2bag.py ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+#target_link_libraries(stereovideo2bag.py ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 
 
 
