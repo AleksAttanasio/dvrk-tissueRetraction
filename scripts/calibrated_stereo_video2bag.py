@@ -14,8 +14,9 @@ import yaml
 TOPIC_R = 'camera/right/image_raw'
 TOPIC_L = 'camera/left/image_raw'
 YAML_TOPIC_R = 'camera/right/camera_info'
+YAML_TOPIC_L = 'camera/left/camera_info'
 
-def CreateVideoBag(videopath_R, videopath_L, bagname, yaml_file):
+def CreateVideoBag(videopath_R, videopath_L, bagname, yaml_file_R, yaml_file_L):
     '''Creates a bag file with a video file'''
     bag = rosbag.Bag(bagname, 'w')
     cap_r = cv2.VideoCapture(videopath_R)
@@ -27,17 +28,29 @@ def CreateVideoBag(videopath_R, videopath_L, bagname, yaml_file):
     frame_id = 0
     count = 0
 	# Load data from file
-    with open(yaml_file, "r") as file_handle:
+    with open(yaml_file_R, "r") as file_handle:
 	calib_data = yaml.load(file_handle)
 
-	camera_info_msg = CameraInfo()
-	camera_info_msg.width = calib_data["image_width"]
-	camera_info_msg.height = calib_data["image_height"]
-	camera_info_msg.K = calib_data["camera_matrix"]["data"]
-	camera_info_msg.D = calib_data["distortion_coefficients"]["data"]
-	camera_info_msg.R = calib_data["rectification_matrix"]["data"]
-	camera_info_msg.P = calib_data["projection_matrix"]["data"]
-	camera_info_msg.distortion_model = calib_data["distortion_model"]
+	camera_info_msg_R = CameraInfo()
+	camera_info_msg_R.width = calib_data["image_width"]
+	camera_info_msg_R.height = calib_data["image_height"]
+	camera_info_msg_R.K = calib_data["camera_matrix"]["data"]
+	camera_info_msg_R.D = calib_data["distortion_coefficients"]["data"]
+	camera_info_msg_R.R = calib_data["rectification_matrix"]["data"]
+	camera_info_msg_R.P = calib_data["projection_matrix"]["data"]
+	camera_info_msg_R.distortion_model = calib_data["distortion_model"]
+    
+    with open(yaml_file_L, "r") as file_handle:
+	calib_data = yaml.load(file_handle)
+
+	camera_info_msg_L = CameraInfo()
+	camera_info_msg_L.width = calib_data["image_width"]
+	camera_info_msg_L.height = calib_data["image_height"]
+	camera_info_msg_L.K = calib_data["camera_matrix"]["data"]
+	camera_info_msg_L.D = calib_data["distortion_coefficients"]["data"]
+	camera_info_msg_L.R = calib_data["rectification_matrix"]["data"]
+	camera_info_msg_L.P = calib_data["projection_matrix"]["data"]
+	camera_info_msg_L.distortion_model = calib_data["distortion_model"]
 	
 
     #max_frame = max(cap_r.get(CV_CAP_PROP_FRAME_COUNT), cap_l.get(CV_CAP_PROP_FRAME_COUNT))
@@ -64,7 +77,8 @@ def CreateVideoBag(videopath_R, videopath_L, bagname, yaml_file):
 
         bag.write(TOPIC_R, image_r, stamp)
 	bag.write(TOPIC_L, image_l, stamp)
-	bag.write(YAML_TOPIC_R, camera_info_msg, stamp)
+	bag.write(YAML_TOPIC_R, camera_info_msg_R, stamp)
+	bag.write(YAML_TOPIC_L, camera_info_msg_L, stamp)
 
     cap_r.release()
     cap_l.release()
@@ -72,7 +86,7 @@ def CreateVideoBag(videopath_R, videopath_L, bagname, yaml_file):
 
 
 if __name__ == "__main__":
-    if len( sys.argv ) == 5:
+    if len( sys.argv ) == 6:
         CreateVideoBag(*sys.argv[1:])
     else:
-        print( "Usage: stereovideo2bag <videofilename_R> <videofilename_L> <bagfilename> <yaml_file>")
+        print( "Usage: stereovideo2bag <videofilename_R> <videofilename_L> <bagfilename> <yaml_file_R_cam> <yaml_file_L_cam>")
