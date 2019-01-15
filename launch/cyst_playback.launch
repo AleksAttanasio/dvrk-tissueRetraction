@@ -79,6 +79,16 @@
         <node ns="stereo" pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" output="screen">
 		<param name="approximate_sync" value="true"/>
 		<param name="queue_size" value="10"/>
+
+		<param name="prefilter_size" value="61"/>
+		<param name="prefilter_cap" value="19"/>
+		<param name="correlation_window_size" value="111"/>
+		<param name="min_disparity" value="25"/>
+		<param name="disparity_range" value="80"/>
+		<param name="uniqueness_ratio" value="0.0"/>
+		<param name="texture_threshold" value="22222"/>
+		<param name="speckle_size" value="131"/>
+		<param name="speckle_range" value="7"/>	
         </node>
 
         <node pkg="image_view" type="stereo_view" name="stereo_view" output="screen">
