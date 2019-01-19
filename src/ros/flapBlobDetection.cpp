@@ -49,14 +49,35 @@ int main (int argc, char** argv){
     ros::Rate loop_rate(24);
 
     // K-mean parameters
+    int K = 3;
+    std::vector<int> labels;
+    cv::Mat1f colors;
+    cv::Mat data;
+    cv::Mat reduced;
+
 
     while(ros::ok()){
 
         if(!depth_mat.empty()) {
 
+            data = cv::Mat(depth_mat.size(), depth_mat.type());
+            data = depth_mat.reshape(1, depth_mat.rows * depth_mat.cols);
+            kmeans(data, K, labels, cv::TermCriteria(), 1, cv::KMEANS_PP_CENTERS, colors);
+
+            for (int i = 0; i < depth_mat.cols * depth_mat.rows; ++i)
+            {
+                data.at<float>(i, 0) = colors(labels[i], 0);
+                data.at<float>(i, 1) = colors(labels[i], 1);
+                data.at<float>(i, 2) = colors(labels[i], 2);
+            }
 
 
+            reduced = data.reshape(1, depth_mat.rows);
+//            reduced.convertTo(reduced, CV_8U);
+            cv::imshow("reduced", reduced);
         }
+
+
 
         loop_rate.sleep();
         ros::spinOnce();
