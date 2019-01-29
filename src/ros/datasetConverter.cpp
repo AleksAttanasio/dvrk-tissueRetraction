@@ -73,10 +73,11 @@ void disparityCallback(const stereo_msgs::DisparityImage msg){
 int main (int argc, char** argv) {
 
     // ROS init, subs and pubs
+    int image_cnt = 0;                                                  // count of images
+    int frame_skip_count = 0;
     string left_img_topic = "/stereo/left/image_rect_color";
     string right_img_topic = "/stereo/right/image_rect_color";
     string disp_map_topic = "/decompressed/disparity";
-    int image_cnt = 0;                                                  // count of images
     string disp_map_path = "/home/aleks/rosbag_lobe/disp";
     string right_img_rect_path = "/home/aleks/rosbag_lobe/right";
     string left_img_rect_path = "/home/aleks/rosbag_lobe/left";
@@ -96,26 +97,31 @@ int main (int argc, char** argv) {
 
     while (ros::ok()) {
 
-        if (!depth_mat.empty()) {
+            if (!depth_mat.empty() && frame_skip_count == 12) {
 
-            ss_disp_map << disp_map_path << "/" << "disp_" << image_cnt << ".jpeg";
-            ss_left_img << right_img_rect_path << "/" << "right_" << image_cnt << ".jpeg";
-            ss_right_img << left_img_rect_path << "/" << "left_" << image_cnt << ".jpeg";
+                // file name
+                ss_disp_map << disp_map_path << "/" << "disp_" << image_cnt << ".jpeg";
+                ss_left_img << right_img_rect_path << "/" << "right_" << image_cnt << ".jpeg";
+                ss_right_img << left_img_rect_path << "/" << "left_" << image_cnt << ".jpeg";
 
-            image_cnt++;
+                image_cnt++;
 
-            cv::imwrite(ss_disp_map.str().c_str(), cv_disp_ptr->image);
-            cv::imwrite(ss_left_img.str().c_str(), cv_left_ptr->image);
-            cv::imwrite(ss_right_img.str().c_str(), cv_right_ptr->image);
+                //save images
+                cv::imwrite(ss_disp_map.str().c_str(), cv_disp_ptr->image);
+                cv::imwrite(ss_left_img.str().c_str(), cv_left_ptr->image);
+                cv::imwrite(ss_right_img.str().c_str(), cv_right_ptr->image);
 
-            ss_disp_map.str(std::string());
-            ss_left_img.str(std::string());
-            ss_right_img.str(std::string());
-        }
+                //  reset strings an counter
+                ss_disp_map.str(std::string());
+                ss_left_img.str(std::string());
+                ss_right_img.str(std::string());
+                frame_skip_count = 0;
+            }
 
 
-        loop_rate.sleep();
-        ros::spinOnce();
+            loop_rate.sleep();
+            ros::spinOnce();
+            frame_skip_count++;
     }
 
     return 0;
