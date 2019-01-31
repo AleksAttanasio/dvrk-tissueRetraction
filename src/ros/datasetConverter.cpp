@@ -379,7 +379,7 @@ int main (int argc, char** argv) {
 
     while (ros::ok()) {
 
-            if (!depth_mat.empty() && frame_skip_count == 12) {
+            if (!disparity_color_.empty() && frame_skip_count == 12) {
 
                 // file name
                 ss_disp_map << disp_map_path << "/" << "disp_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
