@@ -360,6 +360,7 @@ int main (int argc, char** argv) {
     string left_img_topic = "/stereo/left/image_rect_color";
     string right_img_topic = "/stereo/right/image_rect_color";
     string disp_map_topic = "/decompressed/disparity";
+    string main_dir_path = "/home/aleks/rosbag_";
     string disp_map_path = "/home/aleks/rosbag_lobe/disp_color";
     string right_img_rect_path = "/home/aleks/rosbag_lobe/right";
     string left_img_rect_path = "/home/aleks/rosbag_lobe/left";
@@ -379,19 +380,19 @@ int main (int argc, char** argv) {
 
     while (ros::ok()) {
 
-            if (!disparity_color_.empty() && frame_skip_count == 12) {
+            if (!disparity_color_.empty() && frame_skip_count == 24) {
 
                 // file name
-                ss_disp_map << disp_map_path << "/" << "disp_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
-                ss_left_img << right_img_rect_path << "/" << "right_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
-                ss_right_img << left_img_rect_path << "/" << "left_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
+                ss_disp_map << main_dir_path << argv[1] << "/disp_color/" << "disp_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
+                ss_left_img << main_dir_path << argv[1] <<"/right/" << "right_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
+                ss_right_img << main_dir_path << argv[1] << "/left/" << "left_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
 
                 image_cnt++;
 
                 //save images
                 cv::imwrite(ss_disp_map.str().c_str(), disparity_color_);
-//                cv::imwrite(ss_left_img.str().c_str(), cv_left_ptr->image);
-//                cv::imwrite(ss_right_img.str().c_str(), cv_right_ptr->image);
+                cv::imwrite(ss_left_img.str().c_str(), cv_left_ptr->image);
+                cv::imwrite(ss_right_img.str().c_str(), cv_right_ptr->image);
 
                 //  reset strings an counter
                 ss_disp_map.str(std::string());
@@ -405,7 +406,7 @@ int main (int argc, char** argv) {
             ros::spinOnce();
             frame_skip_count++;
 
-            if(image_cnt == 10000){break;}
+            if(image_cnt == 5000){break;}
     }
 
     return 0;
