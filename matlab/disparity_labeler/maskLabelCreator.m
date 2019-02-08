@@ -89,8 +89,8 @@ for k = 1 : 3
         mask_idk = mask_idk(56:521,160:665,:);
         
         tissue_mask_name = strcat('tissue_mask_', num2str(img_cnt, '%05.f%'),'.png');
-        tool_mask_name = strcat('tissue_mask_', num2str(img_cnt, '%05.f%'),'.png');
-        idk_mask_name = strcat('tissue_mask_', num2str(img_cnt, '%05.f%'),'.png');
+        tool_mask_name = strcat('tool_mask_', num2str(img_cnt, '%05.f%'),'.png');
+        idk_mask_name = strcat('idk_mask_', num2str(img_cnt, '%05.f%'),'.png');
         
         imwrite(mask_tissue, strcat(tissue_mask_folder, tissue_mask_name));
         imwrite(mask_tool, strcat(tool_mask_folder, tool_mask_name));
