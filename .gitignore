@@ -53,3 +53,4 @@ scripts/bags/*.bag
 
 dataset/rosbag_lobe/disp/
 ThreadedDepthCleaner/
+src/tensorflow/nn_flap_detection/flapDetection/tissue_dataset/
