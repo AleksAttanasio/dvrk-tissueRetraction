@@ -9,7 +9,7 @@ max_aug = 6; % maximum allowed single image augmentation
 num_image_dataset = 1000; % number of images contained in the baseline data
 aug_map = [0:1:num_image_dataset;zeros(1,num_image_dataset + 1)]'; % map to keep track of augmentation
 img_cnt = 1001; %end of the baseline dataset
-target_num = 3000; % number of images to create
+target_num = 5000; % number of images to create
 
 % dataset root folder paths
 cropped_path = 'dataset/cropped/';
