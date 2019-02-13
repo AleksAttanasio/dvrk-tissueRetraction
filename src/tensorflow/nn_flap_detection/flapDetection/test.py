@@ -1,37 +1,31 @@
 import os
-# import glob
-# import zipfile
 import functools
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-mpl.rcParams['axes.grid'] = False
-mpl.rcParams['figure.figsize'] = (12,12)
-
-from sklearn.model_selection import train_test_split
-import matplotlib.image as mpimg
-# import pandas as pd
-from PIL import Image
-
 import tensorflow as tf
 import tensorflow.contrib as tfcontrib
+import matplotlib.image as mpimg
+from sklearn.model_selection import train_test_split
+from PIL import Image
 from tensorflow.python.keras import layers
 from tensorflow.python.keras import losses
 from tensorflow.python.keras import models
-# from tensorflow.python.keras import backend as K
+mpl.rcParams['axes.grid'] = False
+mpl.rcParams['figure.figsize'] = (12, 12)
 
+# Load dataset from image file names
 dataset_name = os.path.join('tissue_dataset', 'resized')
 
 img_dir = os.path.join(dataset_name, "train")
-label_dir = os.path.join(dataset_name, "gif_tissue")
+label_dir = os.path.join(dataset_name, "train_masks")
 
 x_train_filenames = []
 y_train_filenames = []
 
 for i in range(0,  1000):
     train_name = "disp_{:05}.jpeg".format(i)
-    label_name = "tissue_mask_{:05}.gif".format(i)
+    label_name = "tissue_mask_{:05}.png".format(i)
 
     x_train_filenames.append(os.path.join(img_dir, train_name))
     y_train_filenames.append(os.path.join(label_dir, label_name))
@@ -50,7 +44,6 @@ display_num = 5
 r_choices = np.random.choice(num_train_examples, display_num)
 
 plt.figure(figsize=(10, 15))
-
 for i in range(0, display_num * 2, 2):
     img_num = r_choices[i // 2]
     x_pathname = x_train_filenames[img_num]
@@ -70,24 +63,25 @@ for i in range(0, display_num * 2, 2):
 plt.suptitle("Examples of Images and their Masks")
 plt.show()
 
+# Settings
 img_shape = (256, 256, 3)
-batch_size = 12
-epochs = 50
+batch_size = 3
+epochs = 5
 
 
 def _process_pathnames(fname, label_path):
-    # We map this function onto each pathname pair
-    img_str = tf.read_file(fname)
-    img = tf.image.decode_jpeg(img_str, channels=3)
+  # We map this function onto each pathname pair
+  img_str = tf.read_file(fname)
+  img = tf.image.decode_jpeg(img_str, channels=3)
 
-    label_img_str = tf.read_file(label_path)
-    # These are gif images so they return as (num_frames, h, w, c)
-    label_img = tf.image.decode_gif(label_img_str)[0]
-    # The label image should only have values of 1 or 0, indicating pixel wise
-    # object (car) or not (background). We take the first channel only.
-    label_img = label_img[:, :, 0]
-    label_img = tf.expand_dims(label_img, axis=-1)
-    return img, label_img
+  label_img_str = tf.read_file(label_path)
+  # These are gif images so they return as (num_frames, h, w, c)
+  label_img = tf.image.decode_gif(label_img_str)[0]
+  # The label image should only have values of 1 or 0, indicating pixel wise
+  # object (car) or not (background). We take the first channel only.
+  label_img = label_img[:, :, 0]
+  label_img = tf.expand_dims(label_img, axis=-1)
+  return img, label_img
 
 
 def shift_img(output_img, label_img, width_shift_range, height_shift_range):
@@ -170,8 +164,8 @@ tr_cfg = {
     'scale': 1 / 255.,
     'hue_delta': 0.1,
     'horizontal_flip': True,
-    'width_shift_range': 0.2,
-    'height_shift_range': 0.2
+    'width_shift_range': 0.1,
+    'height_shift_range': 0.1
 }
 
 tr_preprocessing_fn = functools.partial(_augment, **tr_cfg)
@@ -180,12 +174,14 @@ val_cfg = {
     'resize': [img_shape[0], img_shape[1]],
     'scale': 1 / 255.,
 }
+
 val_preprocessing_fn = functools.partial(_augment, **val_cfg)
 
 train_ds = get_baseline_dataset(x_train_filenames,
                                 y_train_filenames,
                                 preproc_fn=tr_preprocessing_fn,
                                 batch_size=batch_size)
+
 val_ds = get_baseline_dataset(x_val_filenames,
                               y_val_filenames,
                               preproc_fn=val_preprocessing_fn,
@@ -196,6 +192,22 @@ temp_ds = get_baseline_dataset(x_train_filenames,
                                preproc_fn=tr_preprocessing_fn,
                                batch_size=1,
                                shuffle=False)
+# Let's examine some of these augmented images
+data_aug_iter = temp_ds.make_one_shot_iterator()
+next_element = data_aug_iter.get_next()
+with tf.Session() as sess:
+  batch_of_imgs, label = sess.run(next_element)
+
+  # Running next element in our graph will produce a batch of images
+  plt.figure(figsize=(10, 10))
+  img = batch_of_imgs[0]
+
+  plt.subplot(1, 2, 1)
+  plt.imshow(img)
+
+  plt.subplot(1, 2, 2)
+  plt.imshow(label[0, :, :, 0])
+  plt.show()
 
 
 def conv_block(input_tensor, num_filters):
@@ -228,23 +240,23 @@ def decoder_block(input_tensor, concat_tensor, num_filters):
     decoder = layers.Activation('relu')(decoder)
     return decoder
 
-inputs = layers.Input(shape=img_shape) # 448,480
 
-encoder0_pool, encoder0 = encoder_block(inputs, 32) # 224,240
-encoder1_pool, encoder1 = encoder_block(encoder0_pool, 64)  # 112 120
-encoder2_pool, encoder2 = encoder_block(encoder1_pool, 128) # 56 60
-encoder3_pool, encoder3 = encoder_block(encoder2_pool, 256) # 28 30
-encoder4_pool, encoder4 = encoder_block(encoder3_pool, 512) # 14 15
-center = conv_block(encoder4_pool, 1024) # center
-decoder4 = decoder_block(center, encoder4, 512) # 16
-decoder3 = decoder_block(decoder4, encoder3, 256) # 32
-decoder2 = decoder_block(decoder3, encoder2, 128) # 64
-decoder1 = decoder_block(decoder2, encoder1, 64) # 128
-decoder0 = decoder_block(decoder1, encoder0, 32) # 256
+inputs = layers.Input(shape=img_shape)  # 256
+encoder0_pool, encoder0 = encoder_block(inputs, 32)  # 128
+encoder1_pool, encoder1 = encoder_block(encoder0_pool, 64)  # 64
+encoder2_pool, encoder2 = encoder_block(encoder1_pool, 128)  # 32
+encoder3_pool, encoder3 = encoder_block(encoder2_pool, 256)  # 16
+encoder4_pool, encoder4 = encoder_block(encoder3_pool, 512)  # 8
+center = conv_block(encoder4_pool, 1024)  # center
+decoder4 = decoder_block(center, encoder4, 512)  # 16
+decoder3 = decoder_block(decoder4, encoder3, 256)  # 32
+decoder2 = decoder_block(decoder3, encoder2, 128)  # 64
+decoder1 = decoder_block(decoder2, encoder1, 64)  # 128
+decoder0 = decoder_block(decoder1, encoder0, 32)  # 256
 
 outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(decoder0)
 
-model = models.Model(inputs=[inputs], outputs=[outputs])# 128
+model = models.Model(inputs=[inputs], outputs=[outputs])
 
 
 def dice_coeff(y_true, y_pred):
@@ -266,28 +278,6 @@ def bce_dice_loss(y_true, y_pred):
     loss = losses.binary_crossentropy(y_true, y_pred) + dice_loss(y_true, y_pred)
     return loss
 
-def _augment(img,
-             label_img,
-             resize=None,  # Resize the image to some size e.g. [256, 256]
-             scale=1,  # Scale image e.g. 1 / 255.
-             hue_delta=0,  # Adjust the hue of an RGB image by random factor
-             horizontal_flip=False,  # Random left right flip,
-             width_shift_range=0,  # Randomly translate the image horizontally
-             height_shift_range=0):  # Randomly translate the image vertically
-    if resize is not None:
-        # Resize both images
-        label_img = tf.image.resize_images(label_img, resize)
-        img = tf.image.resize_images(img, resize)
-
-    if hue_delta:
-        img = tf.image.random_hue(img, hue_delta)
-
-    img, label_img = flip_img(horizontal_flip, img, label_img)
-    img, label_img = shift_img(img, label_img, width_shift_range, height_shift_range)
-    label_img = tf.to_float(label_img) * scale
-    img = tf.to_float(img) * scale
-    return img, label_img
-
 
 model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_loss])
 
@@ -295,17 +285,16 @@ model.summary()
 
 
 save_model_path = '/tmp/weights.hdf5'
-cp = tf.keras.callbacks.ModelCheckpoint(filepath=save_model_path,
-                                        monitor='val_dice_loss',
-                                        save_best_only=True,
-                                        verbose=1)
+cp = tf.keras.callbacks.ModelCheckpoint(filepath=save_model_path, monitor='val_dice_loss', save_best_only=True, verbose=1)
+
 
 history = model.fit(train_ds,
-                    steps_per_epoch=int(np.ceil(num_train_examples / float(batch_size))),
-                    epochs=epochs,
-                    validation_data=val_ds,
-                    validation_steps=int(np.ceil(num_val_examples / float(batch_size))),
-                    callbacks=[cp])
+                   steps_per_epoch=int(np.ceil(num_train_examples / float(batch_size))),
+                   epochs=epochs,
+                   validation_data=val_ds,
+                   validation_steps=int(np.ceil(num_val_examples / float(batch_size))),
+                   callbacks=[cp])
+
 
 dice = history.history['dice_loss']
 val_dice = history.history['val_dice_loss']
@@ -330,10 +319,6 @@ plt.title('Training and Validation Loss')
 
 plt.show()
 
-# # Alternatively, load the weights directly: model.load_weights(save_model_path)
-# model = models.load_model(save_model_path, custom_objects={'bce_dice_loss': bce_dice_loss,
-#                                                            'dice_loss': dice_loss})
-#
 # Let's visualize some of the outputs
 data_aug_iter = val_ds.make_one_shot_iterator()
 next_element = data_aug_iter.get_next()
@@ -357,3 +342,5 @@ for i in range(5):
     plt.title("Predicted Mask")
 plt.suptitle("Examples of Input Image, Label, and Prediction")
 plt.show()
+
+
