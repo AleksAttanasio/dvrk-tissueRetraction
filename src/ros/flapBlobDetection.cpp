@@ -45,6 +45,8 @@ int main (int argc, char** argv){
     // ROS init, subs and pubs
     ros::init(argc, argv, "flap_detection");
     ros::NodeHandle nh;
+    image_transport::ImageTransport it(nh);
+    image_transport::Publisher pub_disp_map = it.advertise("/decompressed/disparity", 1);
     ros::Subscriber sub_disp_map= nh.subscribe("/stereo/disparity", 1, &disparityCallback);
     ros::Rate loop_rate(24);
 
@@ -60,21 +62,25 @@ int main (int argc, char** argv){
 
         if(!depth_mat.empty()) {
 
-            data = cv::Mat(depth_mat.size(), depth_mat.type());
-            data = depth_mat.reshape(1, depth_mat.rows * depth_mat.cols);
-            kmeans(data, K, labels, cv::TermCriteria(), 1, cv::KMEANS_PP_CENTERS, colors);
 
-            for (int i = 0; i < depth_mat.cols * depth_mat.rows; ++i)
-            {
-                data.at<float>(i, 0) = colors(labels[i], 0);
-                data.at<float>(i, 1) = colors(labels[i], 1);
-                data.at<float>(i, 2) = colors(labels[i], 2);
-            }
+//            data = cv::Mat(depth_mat.size(), depth_mat.type());
+//            data = depth_mat.reshape(1, depth_mat.rows * depth_mat.cols);
+//            kmeans(data, K, labels, cv::TermCriteria(), 1, cv::KMEANS_PP_CENTERS, colors);
+//
+//            for (int i = 0; i < depth_mat.cols * depth_mat.rows; ++i)
+//            {
+//                data.at<float>(i, 0) = colors(labels[i], 0);
+//                data.at<float>(i, 1) = colors(labels[i], 1);
+//                data.at<float>(i, 2) = colors(labels[i], 2);
+//            }
+//
+//
+//            reduced = data.reshape(1, depth_mat.rows);
+////            reduced.convertTo(reduced, CV_8U);
+//            cv::imshow("reduced", reduced);
 
-
-            reduced = data.reshape(1, depth_mat.rows);
-//            reduced.convertTo(reduced, CV_8U);
-            cv::imshow("reduced", reduced);
+            sensor_msgs::ImagePtr disp_map_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", depth_mat_8).toImageMsg();
+            pub_disp_map.publish(disp_map_msg);
         }
 
 

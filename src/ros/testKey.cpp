@@ -1,29 +1,18 @@
-//
-// Created by osboxes on 10/10/18.
-//
-#include <stdio.h>
-#include <curses.h>
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/ximgproc.hpp"
 #include <ros/ros.h>
 
-int kbhit(void)
-{
-    int ch = getch();
+using namespace std;
 
-    if (ch == 113) {
-        ungetch(ch);
-        return 0;
-    }
-    else if (ch == 97){
-        return 1;
-    }
-}
-
-int main(int argc, char **argv)
+int main( int argc, char** argv )
 {
-    const int dir_err = mkdir("foo", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    if (-1 == dir_err)
-    {
-        printf("Error creating directory!n");
-        exit(1);
-    }
+    string inizio = "nel mezzo del";
+    string medio = "cammin";
+    string fine = "nostravita";
+
+    string aaa = inizio + fine + medio;
+    cout << aaa << endl;
+
+    return 0;
 }
