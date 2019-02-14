@@ -62,3 +62,5 @@ matlab/disparity_labeler/tissue_masks_gif/
 matlab/disparity_labeler/unproc_dataset/
 
 matlab/disparity_labeler/test/
+
+src/tensorflow/nn_flap_detection/flapDetection/tissue_dataset/
