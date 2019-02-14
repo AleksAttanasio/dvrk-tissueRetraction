@@ -60,3 +60,5 @@ matlab/disparity_labeler/tissue_masks/
 matlab/disparity_labeler/tissue_masks_gif/
 
 matlab/disparity_labeler/unproc_dataset/
+
+matlab/disparity_labeler/test/
