@@ -5,20 +5,25 @@ if ~exist(dest_folder,'dir')
     mkdir(strcat(dest_folder,'_shuffle/'));
 end
 
+% Read directory
 disp_list = dir(strcat(origin_folder,'/','disp_color'));
 r_list = dir(strcat(origin_folder,'/','right'));
 l_list = dir(strcat(origin_folder,'/','left'));
 
+% number of data to evaluate
 num_data = (size(disp_list,1) -2) - idx_start;
 
-
+% output error in case of too few data compare to batches
 if(batch_size * batch_num > num_data)
     error('batch_size * batch_num > number of elements in the set');
     return
 end
 
+% choose random index for images
 img_idx = randperm(num_data, batch_size * batch_num);
 
+
+% get images and save them into sorted folders
 for i = 0 : (batch_num - 1)
     mkdir(strcat(dest_folder,'_shuffle/batch_', num2str(i,'%02.f%'), '/disp_color'))
     mkdir(strcat(dest_folder,'_shuffle/batch_', num2str(i,'%02.f%'), '/right'))
