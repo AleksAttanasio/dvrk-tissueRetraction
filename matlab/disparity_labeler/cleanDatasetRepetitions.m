@@ -1,4 +1,4 @@
-function [ ] = cleanDataset( mask_folder, thresh )
+function [ ] = cleanDatasetRepetitions( mask_folder, thresh )
 
     list = dir(mask_folder);
     c_idx = 3; % current index
