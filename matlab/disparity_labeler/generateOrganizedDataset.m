@@ -12,14 +12,13 @@ addpath(dataset_dir) % main shuffle folder
 
 %% proc
 
-list_batches = dir('data/10x100_shuffle_over_10k/');
+list_batches = dir(dataset_dir);
 dest_folder = strcat(dataset_dir, 'tissue_masks');
 
-unify_flag = 0; % unify masks in one folder (1) or divide them into bathces
 I = uint8(zeros(576,720,3));
 
 % loading batch labels
-labels = loadBatchLabels(dataset_dir, list_batches, 5);
+labels = loadBatchLabels(dataset_dir, list_batches, 3);
 
 % if destination folder doesn't exist create it
 if ~exist(dest_folder, 'dir')
@@ -51,7 +50,7 @@ for k = 1 : size(labels,2)
                 
                 % find correct file name
                 list_file = dir(strcat(dataset_dir,list_batches(k+2).name,'/disp_color'));
-                split_file = strsplit(list_file(i).name, {'_', '.'});
+                split_file = strsplit(list_file(i+2).name, {'_', '.'});
                 mask_name = strcat('tissue_mask_', split_file{2} ,'.png');
                 
                 mask_file = strcat(dest_folder, '/', mask_name);
