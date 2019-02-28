@@ -1,5 +1,6 @@
-function [ labels ] = loadBatchLabels( dataset_dir, list, num_batches)
+function [ labels ] = loadBatchLabels( dataset_dir, num_batches)
     labels_map = [];
+    list = dir(dataset_dir);
     
     % error in case of exceeding dimensions for the batch number to load
     if (num_batches > size(list,1))
