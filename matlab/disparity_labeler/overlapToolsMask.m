@@ -1,4 +1,4 @@
-function [ outputImg ] = overlapTools( depth_tissue, depth_tool, mask_tool )
+function [ outputImg ] = overlapToolsMask( depth_tissue, depth_tool, mask_tool )
 
     for i = 1 : size(depth_tissue, 1)
         for j = 1 : size(depth_tissue, 2)
