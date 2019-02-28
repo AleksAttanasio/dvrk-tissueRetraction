@@ -15,7 +15,7 @@ function [ ] = folderImageDataCrop( dataset_dir )
                                                 'labels_mat.mat'), 'file')
                                             
                  imageDataCrop(fullfile(dataset_dir,dataset_folder(i).name, ...
-                                            'disp_color_crop'))                           
+                                            'disp_color_crop'));                           
                 
             end
         end        
