@@ -11,7 +11,7 @@ mpl.rcParams['figure.figsize'] = (12,12)
 
 from sklearn.model_selection import train_test_split
 import matplotlib.image as mpimg
-# import pandas as pd
+import pandas as pd
 from PIL import Image
 
 import tensorflow as tf
@@ -21,20 +21,21 @@ from tensorflow.python.keras import losses
 from tensorflow.python.keras import models
 # from tensorflow.python.keras import backend as K
 
-dataset_name = os.path.join('tissue_dataset', 'resized')
+dataset_name = os.path.join('tissue_dataset', 'dataset_ready_aug')
 
-img_dir = os.path.join(dataset_name, "train")
-label_dir = os.path.join(dataset_name, "gif_tissue")
+img_dir = os.path.join(dataset_name, "merged_training_00")
+label_dir = os.path.join(dataset_name, "merged_masks_00_gif")
+
+df_train = pd.read_csv(os.path.join(dataset_name,'label_map_aug_00.csv'))
 
 x_train_filenames = []
 y_train_filenames = []
 
-for i in range(0,  1000):
-    train_name = "disp_{:05}.jpeg".format(i)
-    label_name = "tissue_mask_{:05}.gif".format(i)
+for img_id in df_train['couple_table1']:
+    x_train_filenames.append(os.path.join(img_dir,img_id))
 
-    x_train_filenames.append(os.path.join(img_dir, train_name))
-    y_train_filenames.append(os.path.join(label_dir, label_name))
+for lab_id in df_train['couple_table2']:
+    y_train_filenames.append(os.path.join(label_dir,lab_id))
 
 x_train_filenames, x_val_filenames, y_train_filenames, y_val_filenames = \
     train_test_split(x_train_filenames, y_train_filenames, test_size=0.2, random_state=42)
@@ -71,8 +72,8 @@ plt.suptitle("Examples of Images and their Masks")
 plt.show()
 
 img_shape = (256, 256, 3)
-batch_size = 12
-epochs = 50
+batch_size = 15
+epochs = 500
 
 
 def _process_pathnames(fname, label_path):
