@@ -26,6 +26,8 @@ dataset_name = os.path.join('tissue_dataset', 'dataset_ready_aug')
 img_dir = os.path.join(dataset_name, "merged_training_00")
 label_dir = os.path.join(dataset_name, "merged_masks_00_gif")
 
+save_model_path = '/tmp/nn_std_lr0-00001.hdf5'
+
 df_train = pd.read_csv(os.path.join(dataset_name,'label_map_aug_00.csv'))
 
 x_train_filenames = []
@@ -71,9 +73,9 @@ for i in range(0, display_num * 2, 2):
 plt.suptitle("Examples of Images and their Masks")
 plt.show()
 
-img_shape = (256, 256, 3)
-batch_size = 15
-epochs = 500
+img_shape = (128, 128, 3)
+batch_size = 35
+epochs = 150
 
 
 def _process_pathnames(fname, label_path):
@@ -229,6 +231,7 @@ def decoder_block(input_tensor, concat_tensor, num_filters):
     decoder = layers.Activation('relu')(decoder)
     return decoder
 
+
 inputs = layers.Input(shape=img_shape) # 448,480
 
 encoder0_pool, encoder0 = encoder_block(inputs, 32) # 224,240
@@ -267,6 +270,7 @@ def bce_dice_loss(y_true, y_pred):
     loss = losses.binary_crossentropy(y_true, y_pred) + dice_loss(y_true, y_pred)
     return loss
 
+
 def _augment(img,
              label_img,
              resize=None,  # Resize the image to some size e.g. [256, 256]
@@ -290,16 +294,19 @@ def _augment(img,
     return img, label_img
 
 
-model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_loss])
+# model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_loss])
+adam_opt = tf.keras.optimizers.Adam(lr=0.0001)
+model.compile(optimizer=adam_opt,  loss=bce_dice_loss, metrics=[dice_loss])
 
 model.summary()
 
 
-save_model_path = '/tmp/weights.hdf5'
+
 cp = tf.keras.callbacks.ModelCheckpoint(filepath=save_model_path,
                                         monitor='val_dice_loss',
                                         save_best_only=True,
                                         verbose=1)
+
 
 history = model.fit(train_ds,
                     steps_per_epoch=int(np.ceil(num_train_examples / float(batch_size))),
