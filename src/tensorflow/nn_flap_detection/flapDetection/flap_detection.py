@@ -21,12 +21,12 @@ from tensorflow.python.keras import losses
 from tensorflow.python.keras import models
 # from tensorflow.python.keras import backend as K
 
-dataset_name = os.path.join('tissue_dataset', 'dataset_ready_aug')
+dataset_name = os.path.join('tissue_dataset', 'dataset_ready_aug_00')
 
 img_dir = os.path.join(dataset_name, "merged_training_00")
 label_dir = os.path.join(dataset_name, "merged_masks_00_gif")
 
-save_model_path = '/tmp/nn_std_lr0-00001.hdf5'
+save_model_path = '/tmp/nn_std_lr10e-6_dropout04.hdf5'
 
 df_train = pd.read_csv(os.path.join(dataset_name,'label_map_aug_00.csv'))
 
@@ -245,8 +245,8 @@ decoder3 = decoder_block(decoder4, encoder3, 256) # 32
 decoder2 = decoder_block(decoder3, encoder2, 128) # 64
 decoder1 = decoder_block(decoder2, encoder1, 64) # 128
 decoder0 = decoder_block(decoder1, encoder0, 32) # 256
-
-outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(decoder0)
+dropout = layers.Dropout(0.4)(decoder0)
+outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(dropout)
 
 model = models.Model(inputs=[inputs], outputs=[outputs])# 128
 
@@ -295,7 +295,7 @@ def _augment(img,
 
 
 # model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_loss])
-adam_opt = tf.keras.optimizers.Adam(lr=0.0001)
+adam_opt = tf.keras.optimizers.Adam(lr=0.01)
 model.compile(optimizer=adam_opt,  loss=bce_dice_loss, metrics=[dice_loss])
 
 model.summary()
