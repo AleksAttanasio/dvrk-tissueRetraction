@@ -280,21 +280,21 @@ class Structure:
 
         return inputs, outputs
 
-    def custom_model(self,input_shape, num_filters=32):
+    def custom_model(self,input_shape, num_filters=32, dropout_rate = 0.25):
 
         inputs = layers.Input(shape=input_shape)  # 448,480
-        encoder0_pool, encoder0 = self.encoder_block(inputs, num_filters, 0.25)  # 224,240
+        encoder0_pool, encoder0 = self.encoder_block(inputs, num_filters, dropout_rate)  # 224,240
         encoder1_pool, encoder1 = self.encoder_block(encoder0_pool, num_filters*2, 0)  # 112 120
-        encoder2_pool, encoder2 = self.encoder_block(encoder1_pool, num_filters*4, 0.35)  # 56 60
+        encoder2_pool, encoder2 = self.encoder_block(encoder1_pool, num_filters*4, dropout_rate*1.4)  # 56 60
         encoder3_pool, encoder3 = self.encoder_block(encoder2_pool, num_filters*8, 0)  # 28 30
-        encoder4_pool, encoder4 = self.encoder_block(encoder3_pool, num_filters*16, 0.35)  # 14 15
+        encoder4_pool, encoder4 = self.encoder_block(encoder3_pool, num_filters*16, dropout_rate*1.4)  # 14 15
         center = self.conv_block(encoder4_pool, num_filters*32)  # center
-        decoder4 = self.decoder_block(center, encoder4, num_filters*16, 0.35)  # 16
+        decoder4 = self.decoder_block(center, encoder4, num_filters*16, dropout_rate*1.4)  # 16
         decoder3 = self.decoder_block(decoder4, encoder3, num_filters*8, 0)  # 32
-        decoder2 = self.decoder_block(decoder3, encoder2, num_filters*4, 0.35)  # 64
+        decoder2 = self.decoder_block(decoder3, encoder2, num_filters*4, dropout_rate*1.4)  # 64
         decoder1 = self.decoder_block(decoder2, encoder1, num_filters*2, 0)  # 128
-        decoder0 = self.decoder_block(decoder1, encoder0, num_filters, 0.35)  # 256
-        dropout = layers.Dropout(0.4)(decoder0)
+        decoder0 = self.decoder_block(decoder1, encoder0, num_filters, dropout_rate*1.4)  # 256
+        dropout = layers.Dropout(dropout_rate*2)(decoder0)
         outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(dropout)
 
         return inputs, outputs

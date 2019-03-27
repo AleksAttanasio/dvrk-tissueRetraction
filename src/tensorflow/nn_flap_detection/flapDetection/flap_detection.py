@@ -24,6 +24,8 @@ img_shape = (128, 128, 3)
 batch_size = 25
 epochs = 2
 testset_size = 0.2
+dropout_rate = 0.1
+num_filters = 32
 adam_opt = tf.keras.optimizers.Adam(lr=0.001)
 
 save_model_path = '/home/aleks/nn_results/nn_std_lr10e-3_dropout_02_custom.hdf5'
@@ -51,7 +53,7 @@ fn.show_dataset_labels(x_train=x_train_filenames, y_train=y_train_filenames)
 
 train_ds, val_ds = fn.generate_train_and_val_ds(x_train_filenames, y_train_filenames, x_val_filenames, y_val_filenames)
 
-inputs, outputs = fn_struct.custom_model(img_shape, num_filters=2)
+inputs, outputs = fn_struct.custom_model(img_shape, num_filters=num_filters, dropout_rate=dropout_rate)
 model = models.Model(inputs=[inputs], outputs=[outputs]) # 128
 model.compile(optimizer=adam_opt,  loss=fn_losses.bce_dice_loss, metrics=[fn_losses.dice_loss])
 model.summary()
