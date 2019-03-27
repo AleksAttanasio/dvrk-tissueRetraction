@@ -26,7 +26,8 @@ dataset_name = os.path.join('tissue_dataset', 'dataset_ready_aug_00')
 img_dir = os.path.join(dataset_name, "merged_training_00")
 label_dir = os.path.join(dataset_name, "merged_masks_00_gif")
 
-save_model_path = '/tmp/nn_std_lr10e-6_dropout04.hdf5'
+save_model_path = '/home/aleks/nn_results/nn_std_lr10e-3_dropout_02_custom.hdf5'
+adam_opt = tf.keras.optimizers.Adam(lr=0.001)
 
 df_train = pd.read_csv(os.path.join(dataset_name,'label_map_aug_00.csv'))
 
@@ -75,7 +76,7 @@ plt.show()
 
 img_shape = (128, 128, 3)
 batch_size = 35
-epochs = 150
+epochs = 200
 
 
 def _process_pathnames(fname, label_path):
@@ -211,17 +212,19 @@ def conv_block(input_tensor, num_filters):
     return encoder
 
 
-def encoder_block(input_tensor, num_filters):
+def encoder_block(input_tensor, num_filters,  dropout_rate):
     encoder = conv_block(input_tensor, num_filters)
     encoder_pool = layers.MaxPooling2D((2, 2), strides=(2, 2))(encoder)
+    dropout = layers.Dropout(dropout_rate)(encoder_pool)
 
-    return encoder_pool, encoder
+    return dropout, encoder
 
 
 def decoder_block(input_tensor, concat_tensor, num_filters):
     decoder = layers.Conv2DTranspose(num_filters, (2, 2), strides=(2, 2), padding='same')(input_tensor)
     decoder = layers.concatenate([concat_tensor, decoder], axis=-1)
-    decoder = layers.BatchNormalization()(decoder)
+    dropout = layers.Dropout(0.2)(decoder)
+    decoder = layers.BatchNormalization()(dropout)
     decoder = layers.Activation('relu')(decoder)
     decoder = layers.Conv2D(num_filters, (3, 3), padding='same')(decoder)
     decoder = layers.BatchNormalization()(decoder)
@@ -234,11 +237,11 @@ def decoder_block(input_tensor, concat_tensor, num_filters):
 
 inputs = layers.Input(shape=img_shape) # 448,480
 
-encoder0_pool, encoder0 = encoder_block(inputs, 32) # 224,240
-encoder1_pool, encoder1 = encoder_block(encoder0_pool, 64)  # 112 120
-encoder2_pool, encoder2 = encoder_block(encoder1_pool, 128) # 56 60
-encoder3_pool, encoder3 = encoder_block(encoder2_pool, 256) # 28 30
-encoder4_pool, encoder4 = encoder_block(encoder3_pool, 512) # 14 15
+encoder0_pool, encoder0 = encoder_block(inputs, 32, 0.25) # 224,240
+encoder1_pool, encoder1 = encoder_block(encoder0_pool, 64, 0)  # 112 120
+encoder2_pool, encoder2 = encoder_block(encoder1_pool, 128, 0.35) # 56 60
+encoder3_pool, encoder3 = encoder_block(encoder2_pool, 256, 0) # 28 30
+encoder4_pool, encoder4 = encoder_block(encoder3_pool, 512, 0.35) # 14 15
 center = conv_block(encoder4_pool, 1024) # center
 decoder4 = decoder_block(center, encoder4, 512) # 16
 decoder3 = decoder_block(decoder4, encoder3, 256) # 32
@@ -295,7 +298,7 @@ def _augment(img,
 
 
 # model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_loss])
-adam_opt = tf.keras.optimizers.Adam(lr=0.01)
+
 model.compile(optimizer=adam_opt,  loss=bce_dice_loss, metrics=[dice_loss])
 
 model.summary()
