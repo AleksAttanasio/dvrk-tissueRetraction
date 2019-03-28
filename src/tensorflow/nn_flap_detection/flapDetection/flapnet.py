@@ -5,6 +5,7 @@ import functools
 from tensorflow.python.keras import layers
 from PIL import Image
 import tensorflow as tf
+import datetime
 import tensorflow.contrib as tfcontrib
 import os
 from tensorflow.python.keras import losses
@@ -15,6 +16,7 @@ class Functions:
         self.img_shape = shape_img
         self.batch_size = size_batch
         self.epochs = epochs
+        self.experiment_path = "/home/aleks/nn_results/"
         return
 
     def show_dataset_labels(self, x_train, y_train, display_num=5):
@@ -156,6 +158,32 @@ class Functions:
 
         plt.show()
 
+    def plot_and_save_loss(self, history, exp_path):
+        dice = history.history['dice_loss']
+        val_dice = history.history['val_dice_loss']
+
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+
+        epochs_range = range(self.epochs)
+
+        plt.figure(figsize=(16, 8))
+        plt.subplot(1, 2, 1)
+        plt.plot(epochs_range, dice, label='Training Dice Loss')
+        plt.plot(epochs_range, val_dice, label='Validation Dice Loss')
+        plt.legend(loc='upper right')
+        plt.title('Training and Validation Dice Loss')
+
+        plt.subplot(1, 2, 2)
+        plt.plot(epochs_range, loss, label='Training Loss')
+        plt.plot(epochs_range, val_loss, label='Validation Loss')
+        plt.legend(loc='upper right')
+        plt.title('Training and Validation Loss')
+        exp_folder = os.path.join(self.experiment_path, exp_path)
+        plt.savefig(os.path.join(exp_folder, "loss.png"))
+
+        plt.show()
+
     def plot_predictions(self, model, val_set):
         # Let's visualize some of the outputs
         data_aug_iter = val_set.make_one_shot_iterator()
@@ -180,6 +208,34 @@ class Functions:
             plt.title("Predicted Mask")
         plt.suptitle("Examples of Input Image, Label, and Prediction")
         plt.show()
+
+    def plot_and_save_predictions(self, model, val_set, exp_path):
+        # Let's visualize some of the outputs
+        data_aug_iter = val_set.make_one_shot_iterator()
+        next_element = data_aug_iter.get_next()
+
+        # Running next element in our graph will produce a batch of images
+        plt.figure(figsize=(10, 20))
+        for i in range(5):
+            batch_of_imgs, label = tf.keras.backend.get_session().run(next_element)
+            img = batch_of_imgs[0]
+            predicted_label = model.predict(batch_of_imgs)[0]
+
+            plt.subplot(5, 3, 3 * i + 1)
+            plt.imshow(img)
+            plt.title("Input image")
+
+            plt.subplot(5, 3, 3 * i + 2)
+            plt.imshow(label[0, :, :, 0])
+            plt.title("Actual Mask")
+            plt.subplot(5, 3, 3 * i + 3)
+            plt.imshow(predicted_label[:, :, 0])
+            plt.title("Predicted Mask")
+        plt.suptitle("Examples of Input Image, Label, and Prediction")
+        exp_folder = os.path.join(self.experiment_path, exp_path)
+        plt.savefig(os.path.join(exp_folder, "prediciton.png"))
+        plt.show()
+
 
     def generate_train_and_val_ds(self, x_train_filenames, y_train_filenames, x_val_filenames, y_val_filenames):
 
@@ -224,6 +280,49 @@ class Functions:
             train_test_split(x_train_filenames, y_train_filenames, test_size=test_size, random_state=42)
 
         return x_train_filenames, x_val_filenames, y_train_filenames, y_val_filenames
+
+    def format_e(self,n):
+        a = '%E' % n
+        return a.split('E')[0].rstrip('0').rstrip('.') + 'E' + a.split('E')[1]
+
+    def save_filename_specs(self, test_size, num_filters, dropout_rate, learning_rate):
+        experiment_folder = "nn_"
+
+        if num_filters != 32:
+            experiment_folder = experiment_folder + "custom_"
+        else:
+            experiment_folder = experiment_folder + "std_"
+
+        if dropout_rate > 0:
+            experiment_folder = experiment_folder + "dout" + str(dropout_rate * 10) + "_"
+
+        experiment_folder = experiment_folder + "lr" + self.format_e(learning_rate) + "_"
+        now = datetime.datetime.now().strftime("%d%B%Y_%I-%M%p")
+        experiment_folder = experiment_folder + now
+
+        dir_name = os.path.join(self.experiment_path, experiment_folder)
+        model_filename = experiment_folder + ".hdf5"
+        model_filename = os.path.join(dir_name, model_filename)
+
+        try:
+            # Create target Directory
+            os.mkdir(dir_name)
+            print("Experiment folder ", dir_name, " ---> CREATED ")
+        except FileExistsError:
+            print("Directory ", dir_name, " already exists")
+
+        spec_path = os.path.join(dir_name, "specs.txt")
+
+        f = open(spec_path, "w+")
+        f.write("img_shape: " + str(self.img_shape[0]) + "\n")
+        f.write("batch_size: " + str(self.batch_size) + "\n")
+        f.write("testset_size: " + str(test_size) + "\n")
+        f.write("dropout_rate: " + str(dropout_rate) + "\n")
+        f.write("num_filters: " + str(num_filters) + "\n")
+        f.write("learning_rate: " + str(learning_rate) + "\n")
+        f.close()
+
+        return experiment_folder, model_filename
 
 class Structure:
     def __init__(self, kernel_size=3, stride=2, pool=2):
