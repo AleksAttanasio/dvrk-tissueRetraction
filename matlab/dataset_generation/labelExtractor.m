@@ -1,5 +1,5 @@
 function [ ] = labelExtractor( class, dest_dir )
-% The function extract the train imges and relative labels of the dataset
+% The function extract the train images and relative labels of the dataset
 % defined by the 'class' parameter.
 % Inputs:   - class (type of dataset, could be 'lobe1', 'lobe2' or 'cyst1'
 %           - dest_dir (destination folder for saving the dataset)
