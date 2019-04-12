@@ -74,4 +74,4 @@ src/tensorflow/nn_flap_detection/flapDetection/tissue_dataset/
 
 matlab/disparity_labeler/data/
 
-matlab/dataset_generation/
+matlab/dataset_generation/data/
