@@ -1,4 +1,9 @@
-function [ ] = toolExtractor( class )
+function [ ] = toolExtractor( class, dest_dir )
+% The function extract the tools from disparity maps.
+% Inputs:   - class (type of dataset, could be 'lobe1', 'lobe2' or 'cyst1'
+%           - dest_dir (destination folder for saving the dataset)
+%
+% Note that the dataset will be saved in 'dest_dir/<class>_disparity_maps'
 
 addpath('functions')
 if class == 'lobe1'
@@ -28,14 +33,15 @@ for k = 1: size(labels, 1)
                 tool_mask = extractClassMask(labels, 'tool', k, i, 'white');      
             end
 
-            complete_mask = cropMask(tissue_mask);
+            complete_mask = cropMask(tool_mask);
             [img_name, train_img] = findTrainImage(dataset_dir, batches, k, i);
+            cut_tool_mask = cutToolFromDisparity(complete_mask,train_img);
             
             % save file in folder
-            path = fullfile(dest_dir,strcat(class, '_dataset'));
-            saveTrainAndMask(path, train_img, complete_mask, img_name, ...
-                                    strcat('disp_', class, '_'), ...
-                                    strcat('mask_', class, '_'));
+            path = fullfile(dest_dir,strcat(class, '_tool_disparity'));
+            
+            saveToolDisparity(path, cut_tool_mask, img_name, ...
+                                strcat('disp_tool_', class, '_'));
                                 
         end
     end
