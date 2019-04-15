@@ -1,4 +1,8 @@
 function [ cut_disparity ] = cutToolFromDisparity( mask, disparity )
+% Given a disparity map and its relative tool mask this function cuts the
+% tool from the disparity map. 
+% Input:    - mask: the logical mask for the tools in the image
+%           - disparity: the original disparity map
 
 cut_disparity = uint8(zeros(size(mask)));
 
