@@ -1,6 +1,13 @@
 function [ ] = saveTrainAndMask( path, train, mask, img_name, train_name, mask_name)
-%SAVETRAINANDMASK Summary of this function goes here
-%   Detailed explanation goes here
+% This function saves the disparity maps and the masks in a dedicated folder.
+% Inputs:   - path: path of the destination folder for the data
+%           - train: original disparity map
+%           - mask: mask relative to the 'train' disparity map
+%           - img_name: original image name (used to get a compliant filename)
+%           - train_name: name of the disparity map when saving images
+%           - mask_name: name of the mask to be given the filename
+
+% Note: the final filename is <mask_name> + <img_name>.number
 
     train_path = fullfile(path, 'train');
     label_path = fullfile(path, 'labels');
