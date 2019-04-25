@@ -5,7 +5,7 @@ function [ outputImg ] = overlapToolsDisp( depth_tissue, depth_tool )
     for i = 1 : size(depth_tissue, 1)
         for j = 1 : size(depth_tissue, 2)
             
-            if (sum(depth_tool(i,j,:)) ~= 0 )
+            if (sum(depth_tool(i,j,:)) > 100 )
                     
                 depth_tissue(i,j,:) = depth_tool(i,j,:); 
                 
