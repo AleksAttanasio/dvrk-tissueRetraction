@@ -31,6 +31,9 @@
 *.out
 *.app
 
+#python compiled
+*.pyc
+
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -51,6 +54,8 @@ scripts/bags/*.bag
 
 *.asv
 
+fla
+
 dataset/rosbag_lobe/disp/
 ThreadedDepthCleaner/
 matlab/disparity_labeler/dataset/
@@ -70,6 +75,6 @@ matlab/disparity_labeler/10x1000_shuffle/
 
 matlab/disparity_labeler/test_label_shuffle/
 
-src/tensorflow/nn_flap_detection/flapDetection/tissue_dataset/
+src/tensorflow/nn_flap_detection/flapDetection/
 
 matlab/disparity_labeler/data/
