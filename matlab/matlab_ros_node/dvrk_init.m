@@ -1,7 +1,7 @@
 clear;
 clc;
 close all;
-run(config_file);
+config_file;
 
 %setup transformations
 %compute trasformation from Camera frame to robot frame 0
@@ -33,11 +33,11 @@ answer=input(msg,'s');
 if answer ~= 'Y'
     exit();
 end
-psm1.dmove_translation([0.05 0 0]);
+psml.dmove_translation([0.02,0.0,0.0]);
 wait(2)
-psm1.dmove_translation([-0.05 0.05 0]);
+psml.dmove_translation([-0.02 0.02 0]);
 wait(2)
-psm1.dmove_translation([0 -0.05 0.05]);
+psml.dmove_translation([0 -0.02 0.02]);
 wait(2)
-psm1.dmove_translation([0 0 -0.05]);
+psml.dmove_translation([0 0 -0.02]);
 

@@ -17,7 +17,7 @@ R_c_o=eye(3);
 %hom trasf 
 T_c_o=[[R_c_o;0 0 0], [r_c_o;1]];
 
-ros_master_ip='192.168.0.1';
-ros_master_port='11311';
+ros_master_ip='129.11.176.75';
+ros_master_port=11311;
 
-psmName='PSM1';
+psmName='PSM3';
