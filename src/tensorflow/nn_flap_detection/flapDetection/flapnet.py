@@ -12,7 +12,7 @@ from tensorflow.python.keras import losses
 from sklearn.model_selection import train_test_split
 
 class Functions:
-    def __init__(self, shape_img, size_batch, epochs):
+    def __init__(self, shape_img = (128,128,3), size_batch = 25, epochs = 5):
         self.img_shape = shape_img
         self.batch_size = size_batch
         self.epochs = epochs
@@ -270,10 +270,10 @@ class Functions:
         x_train_filenames = []
         y_train_filenames = []
 
-        for img_id in df_train['couple_table1']:
+        for img_id in df_train['train']:
             x_train_filenames.append(os.path.join(img_dir, img_id))
 
-        for lab_id in df_train['couple_table2']:
+        for lab_id in df_train['label']:
             y_train_filenames.append(os.path.join(label_dir, lab_id))
 
         x_train_filenames, x_val_filenames, y_train_filenames, y_val_filenames = \
