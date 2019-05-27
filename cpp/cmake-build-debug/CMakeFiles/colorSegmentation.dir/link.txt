@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/colorSegmentation.dir/colorSegmentation.cpp.o CMakeFiles/colorSegmentation.dir/ShowImages.cpp.o CMakeFiles/colorSegmentation.dir/ImageProcessing.cpp.o  -o colorSegmentation 
