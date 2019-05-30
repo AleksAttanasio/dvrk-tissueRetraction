@@ -12,15 +12,15 @@ left_R = quat2rotm([left_tf.Rotation.W, left_tf.Rotation.X, ...
                             left_tf.Rotation.Y, left_tf.Rotation.Z]);
 left_T = [left_tf.Translation.X; left_tf.Translation.Y; ...
                                                 left_tf.Translation.Z];
-right_R = quat2rotm([right_tf.Rotation.W, right_tf.Rotation.X, ...
-                            right_tf.Rotation.Y, right_tf.Rotation.Z]);
-right_T = [right_tf.Translation.X, right_tf.Translation.Y, ...
-                                                right_tf.Translation.Z]';
+% right_R = quat2rotm([right_tf.Rotation.W, right_tf.Rotation.X, ...
+%                             right_tf.Rotation.Y, right_tf.Rotation.Z]);
+% right_T = [right_tf.Translation.X, right_tf.Translation.Y, ...
+%                                                 right_tf.Translation.Z]';
 
 % homogeneous transforms                                           
 T_cb_left = [left_R, left_T; [0 0 0 1]];
-T_cb_right = [right_R, right_T; [0 0 0 1]];
-% % T_cb_right = [right_R, right_T; [0 0 0 1]];
+% T_cb_right = [right_R, right_T; [0 0 0 1]];
+
 T_left_center = [[eye(3); 0 0 0], [0; 0.0025; 0; 1]];
 
 % Homogeneous transform from checkerboard to center of cameras
