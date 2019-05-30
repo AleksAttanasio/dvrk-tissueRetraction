@@ -1,6 +1,6 @@
 % ros_master_ip='129.11.176.75';
 % ros_master_port=11311;
-
+% 
 % rosinit(ros_master_ip,ros_master_port);
 
 

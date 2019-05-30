@@ -5,7 +5,7 @@ config_file;
 
 %setup transformations
 %compute trasformation from Camera frame to robot frame 0
-T_c_p0=invhform(T_c_o)*T_o_pb*T_pb_p0;
+T_c_p0=T_c_o*T_o_pb*T_pb_p0;
 
 disp('The trasformation matrix between the camera and the PSM base is:')
 disp(T_c_p0)
