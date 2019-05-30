@@ -1,7 +1,7 @@
-ros_master_ip='129.11.176.75';
-ros_master_port=11311;
+% ros_master_ip='129.11.176.75';
+% ros_master_port=11311;
 
-rosinit(ros_master_ip,ros_master_port);
+% rosinit(ros_master_ip,ros_master_port);
 
 
 %%
@@ -24,6 +24,7 @@ while (l_tf_rcv == 0 || r_tf_rcv == 0)
     end
 end
 
+clear tf_sub msg l_tf_rcv r_tf_rcv
 
 
 
