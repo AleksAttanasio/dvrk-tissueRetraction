@@ -4,7 +4,7 @@ close all;
 
 % Define rotation of PSMs on the bases
 L_arm_rot = 0;
-R_arm_rot
+R_arm_rot = 0;
 
 % Retrieve additional information
 config_file;
