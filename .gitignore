@@ -82,3 +82,7 @@ matlab/disparity_labeler/data/
 matlab/dataset_generation/data/
 
 matlab/grasp_point_detect/labels/
+
+src/tensorflow/nn_flap_detection/nn_flap_detection/flap_detection/venv
+
+
