@@ -5,7 +5,7 @@ T_pb_p0=[0 1 0 0.4864;-1 0 0 0;0 0 1 0.1524;0 0 0 1];
 %Position of PSM1 base wrt zero point
 r_o_pb=[-0.3 -0.285 0.025]';
 %Orientation of PSM1 +base wrt zero point
-R_o_pb=[1 0 0; 0 1 0; 0 0 pi/];
+R_o_pb=[1 0 0; 0 1 0; 0 0 pi/2];
 %hom trasf 
 T_o_pb=[[R_o_pb; 0 0 0] , [r_o_pb ; 1]];
 
