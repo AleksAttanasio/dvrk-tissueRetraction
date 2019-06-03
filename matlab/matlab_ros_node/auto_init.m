@@ -1,6 +1,7 @@
 clear;
 clc;
 close all;
+addpath('../dvrk_matlab')
 
 % Define rotation of PSMs on the bases
 L_arm_rot = 0;
@@ -15,11 +16,13 @@ get_tf;
 
 T_c_o = get_camera_origin_transform(left_tf);
 
+T_c_p0 = T_c_o * T_o_pb * T_pb_p0;
+
 %instantiate psm
 psml=psm(psmName);
 
 %set camera frame as reference frame for PSM 
-psm1.set_base_frame(T_c_p0);
+psml.set_base_frame(T_c_p0);
 
 %home the PSM
 msg=strcat('Do you want to home ',psmName,'? Y/N');

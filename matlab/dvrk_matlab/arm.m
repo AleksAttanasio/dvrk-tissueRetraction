@@ -57,6 +57,7 @@ classdef arm < handle
         jacobian_spatial_subscriber;
         jacobian_body_subscriber;
         % publishers
+        base_frame_publisher
         robot_state_publisher;
         position_goal_joint_publisher;
         position_joint_publisher;
@@ -169,6 +170,9 @@ classdef arm < handle
             % state
             topic = strcat(self.ros_name, '/set_desired_state');
             self.robot_state_publisher = rospublisher(topic, rostype.std_msgs_String);
+            % base frame
+            topic = strcat(self.ros_name, '/set_base_frame');
+            self.base_frame_publisher = rospublisher(topic, rostype.std_msgs_String);
 
             % position goal joint
             topic = strcat(self.ros_name, '/set_position_goal_joint');
@@ -344,7 +348,18 @@ classdef arm < handle
             jacobian = reshape(msg.Data, msg.Layout.Dim(2,1).Size, msg.Layout.Dim(1,1).Size)';
         end
 
-
+        function set_base_frame(htrasf)
+            tras=tform2trvec(htrasf);
+            quat=tform2quat(htrasf);
+            self.geometry_msgs_Pose.Position.X=tras(1);
+            self.geometry_msgs_Pose.Position.Y=tras(2);
+            self.geometry_msgs_Pose.Position.Z=tras(3);
+            self.geometry_msgs_Pose.Orientation.X=quat(1);
+            self.geometry_msgs_Pose.Orientation.Y=quat(2);
+            self.geometry_msgs_Pose.Orientation.Z=quat(3);
+            self.geometry_msgs_Pose.Orientation.W=quat(4);
+            send(self.base_frame_publisher,self.geometry_msgs_Pose);
+        end
 
         function home(self)
             % Home the robot.  This method will request power on, calibrate
