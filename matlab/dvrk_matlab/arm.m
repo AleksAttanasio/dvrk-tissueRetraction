@@ -172,7 +172,7 @@ classdef arm < handle
             self.robot_state_publisher = rospublisher(topic, rostype.std_msgs_String);
             % base frame
             topic = strcat(self.ros_name, '/set_base_frame');
-            self.base_frame_publisher = rospublisher(topic, rostype.std_msgs_String);
+            self.base_frame_publisher = rospublisher(topic, rostype.geometry_msgs_Pose);
 
             % position goal joint
             topic = strcat(self.ros_name, '/set_position_goal_joint');
@@ -348,7 +348,7 @@ classdef arm < handle
             jacobian = reshape(msg.Data, msg.Layout.Dim(2,1).Size, msg.Layout.Dim(1,1).Size)';
         end
 
-        function set_base_frame(htrasf)
+        function set_base_frame(self,htrasf)
             tras=tform2trvec(htrasf);
             quat=tform2quat(htrasf);
             self.geometry_msgs_Pose.Position.X=tras(1);
