@@ -1,11 +1,19 @@
+addpath('../dvrk_matlab')
+addpath('./utilities')
+% Define rotation of PSMs on the bases in degrees
+L_arm_rot = 40;
+R_arm_rot = 0;
+
 %init section with session-constant matrices
 %homogeneus transform between base of the PSM and fulcrum of the mechanism
 T_pb_p0=[0 1 0 0.4864;-1 0 0 0;0 0 1 0.1524;0 0 0 1];
 
 %Position of PSM1 base wrt zero point
-r_o_pb=[-0.3 -0.285 0.025]';
+r_o_pb=[-0.297 -0.288 0.023]';
 %Orientation of PSM1 +base wrt zero point
-R_o_pb=[1 0 0; 0 1 0; 0 0 pi/2];
+R_o_pb=[cos(deg2rad(L_arm_rot)), -sin(deg2rad(L_arm_rot)), 0; ...
+        sin(deg2rad(L_arm_rot)), cos(deg2rad(L_arm_rot)) , 0; ...
+        0                      ,0                        , 1];
 %hom trasf 
 T_o_pb=[[R_o_pb; 0 0 0] , [r_o_pb ; 1]];
 
