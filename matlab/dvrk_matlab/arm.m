@@ -354,10 +354,10 @@ classdef arm < handle
             self.geometry_msgs_Pose.Position.X=tras(1);
             self.geometry_msgs_Pose.Position.Y=tras(2);
             self.geometry_msgs_Pose.Position.Z=tras(3);
-            self.geometry_msgs_Pose.Orientation.X=quat(1);
-            self.geometry_msgs_Pose.Orientation.Y=quat(2);
-            self.geometry_msgs_Pose.Orientation.Z=quat(3);
-            self.geometry_msgs_Pose.Orientation.W=quat(4);
+            self.geometry_msgs_Pose.Orientation.X=quat(2);
+            self.geometry_msgs_Pose.Orientation.Y=quat(3);
+            self.geometry_msgs_Pose.Orientation.Z=quat(4);
+            self.geometry_msgs_Pose.Orientation.W=quat(1);
             send(self.base_frame_publisher,self.geometry_msgs_Pose);
         end
 
