@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="rosbag" type="play" name="rosbag" required="true" args="/home/aleks/rosbags/test_dvrk_lite_endoscope.bag"/>
+
+  <node name="republish_l" type="republish" pkg="image_transport" output="screen" args="compressed in:=/endoscope/left/image_raw raw out:=/endoscope/left/image_raw" />
+
+  <node name="republish_r" type="republish" pkg="image_transport" output="screen" args="compressed in:=/endoscope/right/image_raw raw out:=/endoscope/right/image_raw" />
+
+</launch>
