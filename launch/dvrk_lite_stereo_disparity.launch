@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     	<!-- GENERAL PARAMS -->
- 	<arg name="frame_id" default="stereo_cameras" />
+ 	<arg name="frame_id" default="endoscope" />
     	<arg name="width" default="0"/>
 	<arg name="height" default="0"/>
 	<arg name="flip_horizontal" default="false" />
@@ -31,7 +31,7 @@
         </node>
 
         <node pkg="image_view" type="stereo_view" name="stereo_view" output="screen">
-		<remap from="stereo" to="stereo"/>
+		<remap from="stereo" to="endoscope"/>
 		<remap from="image" to="image_rect"/>
 		<param name="approximate_sync" value="true"/>
 		<param name="queue_size" value="10"/>		
