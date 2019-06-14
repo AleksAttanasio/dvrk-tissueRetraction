@@ -10,15 +10,16 @@ config_file;
 rosinit
 get_tf;
 auto_transform;
+
 %%
-T_c_p0 = T_c_o * T_o_pb * T_pb_p0;
+T_c_p0 = T_c_l * T_l_o * T_o_pb * T_pb_p0;
 T_o_p0 = T_o_pb * T_pb_p0;
 
 %instantiate psm
 psml=psm(psmName);
 
 %set camera frame as reference frame for PSM 
-psml.set_base_frame(T_o_p0);
+psml.set_base_frame(T_c_p0);
 
 %home the PSM
 % msg=strcat('Do you want to home ',psmName,'? Y/N');
