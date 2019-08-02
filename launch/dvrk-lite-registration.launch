@@ -4,7 +4,7 @@
   <arg name="image_right"              default="/endoscope/right/image_raw"/>
   <arg name="checkerboard_columns"     default="8"/>
   <arg name="checkerboard_rows"        default="6"/>
-  <arg name="checkerboard_square_size" default="0.010"/>
+  <arg name="checkerboard_square_size" default="0.012"/>
   <arg name="rotate_camera_image_180"  default="false"/>
   <arg name="rviz"                     default="true"/>
 
