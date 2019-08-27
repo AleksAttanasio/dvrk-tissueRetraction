@@ -1,15 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     	<!-- GENERAL PARAMS -->
- 	<arg name="frame_id" default="endoscope" />
-    	<arg name="width" default="0"/>
-	<arg name="height" default="0"/>
-	<arg name="flip_horizontal" default="false" />
-	<arg name="flip_vertical" default="false" />
-	<arg name="loop_videofile" default="true" />
-	<arg name="fps" default="25" />
-  	<arg name="buffer_queue_size" default="100" />
-  	<arg name="set_camera_fps" default="25" />
+  	<arg name="buffer_queue_size" default="10" />
 
   	<!-- if show a image_view window subscribed to the generated stream -->
 	<arg name="visualize" default="false"/>
@@ -17,26 +9,28 @@
    	<!-- images will be published at /camera_name/image with the image transports plugins (e.g.: compressed) installed -->
         <node ns="endoscope" pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" output="screen">
 		<param name="approximate_sync" value="true"/>
-		<param name="queue_size" value="10"/>
+		<param name="queue_size" value="$(arg buffer_queue_size)"/>
 
 		<param name="prefilter_size" value="61"/>
 		<param name="prefilter_cap" value="19"/>
 		<param name="correlation_window_size" value="111"/>
-		<param name="min_disparity" value="25"/>
-		<param name="disparity_range" value="80"/>
+		<param name="min_disparity" value="-16"/>
+		<param name="disparity_range" value="96"/>
 		<param name="uniqueness_ratio" value="0.0"/>
-		<param name="texture_threshold" value="22222"/>
-		<param name="speckle_size" value="131"/>
-		<param name="speckle_range" value="7"/>	
+		<param name="texture_threshold" value="10000"/>
+		<param name="speckle_size" value="913"/>
+		<param name="speckle_range" value="23"/>	
         </node>
+
+        <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"/>
 
         <node pkg="image_view" type="stereo_view" name="stereo_view" output="screen">
 		<remap from="stereo" to="endoscope"/>
 		<remap from="image" to="image_rect"/>
-		<param name="approximate_sync" value="true"/>
-		<param name="queue_size" value="10"/>		
+		<param name="approximate_sync" value="True"/>
+		<param name="queue_size" value="$(arg buffer_queue_size)"/>		
         </node>
 
-        <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"/>
+
 
 </launch>
