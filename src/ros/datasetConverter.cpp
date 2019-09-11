@@ -312,45 +312,45 @@ void rightImageCallback(const sensor_msgs::ImageConstPtr msg) {
     }
 }
 //
-//void disparityCallback(const stereo_msgs::DisparityImage msg){
-//
-//    double minVal;
-//    double maxVal;
-//    cv::Point minLoc;
-//    cv::Point maxLoc;
-//
-//    minMaxLoc( depth_mat, &minVal, &maxVal, &minLoc, &maxLoc );
-//    cv_disp_ptr = cv_bridge::toCvCopy(msg.image);
-//    depth_mat = cv_bridge::toCvCopy(msg.image)->image;
-//    depth_mat.convertTo(depth_mat,CV_32FC1,1.0/255.0);
-//    depth_mat.convertTo(depth_mat_8, CV_8UC1, 255.0/(maxVal-minVal),-255.0*minVal/(maxVal-minVal));
-//
-//    cv::imshow("Direct Stream", depth_mat);
-//    cv::waitKey(15);
-//}
+void disparityCallback(const stereo_msgs::DisparityImage msg){
 
-void disparityCallback(const stereo_msgs::DisparityImageConstPtr& disp) {
-    float min_disparity = disp->min_disparity;
-    float max_disparity = disp->max_disparity;
-    float multiplier = 255.0f / (max_disparity - min_disparity);
-    assert(disp->image.encoding == sensor_msgs::image_encodings::TYPE_32FC1);
-    const cv::Mat_<float> dmat(disp->image.height, disp->image.width,
-                               (float*)&disp->image.data[0], disp->image.step);
-    disparity_color_.create(disp->image.height, disp->image.width);
+    double minVal;
+    double maxVal;
+    cv::Point minLoc;
+    cv::Point maxLoc;
 
-    for (int row = 0; row < disparity_color_.rows; ++row) {
-        const float* d = dmat[row];
-        for (int col = 0; col < disparity_color_.cols; ++col) {
-            int index = (d[col] - min_disparity) * multiplier + 0.5;
-            index = std::min(255, std::max(0, index));
-            // Fill as BGR
-            disparity_color_(row, col)[2] = colormap[3*index + 0];
-            disparity_color_(row, col)[1] = colormap[3*index + 1];
-            disparity_color_(row, col)[0] = colormap[3*index + 2];
-        }
-    }
-    imshow( "view", disparity_color_ );
+    minMaxLoc( depth_mat, &minVal, &maxVal, &minLoc, &maxLoc );
+    cv_disp_ptr = cv_bridge::toCvCopy(msg.image);
+    depth_mat = cv_bridge::toCvCopy(msg.image)->image;
+    depth_mat.convertTo(depth_mat,CV_32FC1,1.0/255.0);
+    depth_mat.convertTo(depth_mat_8, CV_8UC1, 255.0/(maxVal-minVal)); //,-255.0*minVal/(maxVal-minVal));
+
+    cv::imshow("Direct Stream", depth_mat);
+    cv::waitKey(15);
 }
+
+//void disparityCallback(const stereo_msgs::DisparityImageConstPtr& disp) {
+//    float min_disparity = disp->min_disparity;
+//    float max_disparity = disp->max_disparity;
+//    float multiplier = 255.0f / (max_disparity - min_disparity);
+//    assert(disp->image.encoding == sensor_msgs::image_encodings::TYPE_32FC1);
+//    const cv::Mat_<float> dmat(disp->image.height, disp->image.width,
+//                               (float*)&disp->image.data[0], disp->image.step);
+//    disparity_color_.create(disp->image.height, disp->image.width);
+//
+//    for (int row = 0; row < disparity_color_.rows; ++row) {
+//        const float* d = dmat[row];
+//        for (int col = 0; col < disparity_color_.cols; ++col) {
+//            int index = (d[col] - min_disparity) * multiplier + 0.5;
+//            index = std::min(255, std::max(0, index));
+//            // Fill as BGR
+//            disparity_color_(row, col)[2] = colormap[3*index + 0];
+//            disparity_color_(row, col)[1] = colormap[3*index + 1];
+//            disparity_color_(row, col)[0] = colormap[3*index + 2];
+//        }
+//    }
+//    imshow( "view", disparity_color_ );
+//}
 
 int main (int argc, char** argv) {
 
@@ -368,7 +368,7 @@ int main (int argc, char** argv) {
     stringstream ss_right_img;
     stringstream ss_left_img;
 
-    ros::init(argc, argv, "flap_detection");
+    ros::init(argc, argv, "dataset_conversion");
     ros::NodeHandle nh;
     image_transport::ImageTransport it(nh);
     image_transport::Subscriber left_img_sub = it.subscribe(left_img_topic, 1, &leftImageCallback);
@@ -380,17 +380,21 @@ int main (int argc, char** argv) {
 
     while (ros::ok()) {
 
-            if (!disparity_color_.empty() && frame_skip_count == 24) {
+            if (!depth_mat.empty() && frame_skip_count == 24) {
 
                 // file name
-                ss_disp_map << main_dir_path << argv[1] << "/disp_color/" << "disp_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
-                ss_left_img << main_dir_path << argv[1] <<"/right/" << "right_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
-                ss_right_img << main_dir_path << argv[1] << "/left/" << "left_" << setw(5) << setfill('0') << image_cnt << ".jpeg";
+                ss_disp_map << main_dir_path << "lobe" << "/disp_color/" << "disp_" << setw(5) << setfill('0') << image_cnt << ".png";
+                ss_left_img << main_dir_path << "lobe" <<"/right/" << "right_" << setw(5) << setfill('0') << image_cnt << ".png";
+                ss_right_img << main_dir_path << "lobe" << "/left/" << "left_" << setw(5) << setfill('0') << image_cnt << ".png";
                 
                 image_cnt++;
 
+                vector<int> compression_params;
+                compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+                compression_params.push_back(1);
+
                 //save images
-                cv::imwrite(ss_disp_map.str().c_str(), disparity_color_);
+                cv::imwrite(ss_disp_map.str().c_str(), depth_mat_8, compression_params);
                 cv::imwrite(ss_left_img.str().c_str(), cv_left_ptr->image);
                 cv::imwrite(ss_right_img.str().c_str(), cv_right_ptr->image);
 
@@ -398,6 +402,7 @@ int main (int argc, char** argv) {
                 ss_disp_map.str(std::string());
                 ss_left_img.str(std::string());
                 ss_right_img.str(std::string());
+
                 frame_skip_count = 0;
             }
 
