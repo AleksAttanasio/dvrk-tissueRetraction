@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import functools
 from tensorflow.python.keras import layers
+from keras.regularizers import l2
 from PIL import Image
 import tensorflow as tf
 import datetime
@@ -209,6 +210,17 @@ class Functions:
         plt.suptitle("Examples of Input Image, Label, and Prediction")
         plt.show()
 
+    def plot_and_save_accuracy(self, history, exp_path):
+        plt.plot(history.history['acc'])
+        plt.plot(history.history['val_acc'])
+        plt.title('Model Accuracy')
+        plt.ylabel('Accuracy')
+        plt.xlabel('Epoch')
+        plt.legend(['train', 'test'], loc='upper left')
+        exp_folder = os.path.join(self.experiment_path, exp_path)
+        plt.savefig(os.path.join(exp_folder, "accuracy.png"))
+        plt.show()
+
     def plot_and_save_predictions(self, model, val_set, exp_path):
         # Let's visualize some of the outputs
         data_aug_iter = val_set.make_one_shot_iterator()
@@ -235,6 +247,7 @@ class Functions:
         exp_folder = os.path.join(self.experiment_path, exp_path)
         plt.savefig(os.path.join(exp_folder, "prediciton.png"))
         plt.show()
+
 
 
     def generate_train_and_val_ds(self, x_train_filenames, y_train_filenames, x_val_filenames, y_val_filenames):
@@ -265,6 +278,78 @@ class Functions:
 
         return train_ds, val_ds
 
+    def generate_train_and_val_ds(self, x_train_filenames, y_train_filenames, x_val_filenames, y_val_filenames):
+
+        tr_cfg = {'resize': [self.img_shape[0], self.img_shape[1]],
+                  'scale': 1 / 255.,
+                  'hue_delta': 0.1,
+                  'horizontal_flip': True,
+                  'width_shift_range': 0.2,
+                  'height_shift_range': 0.2}
+
+        tr_preprocessing_fn = functools.partial(self._augment, **tr_cfg)
+
+        val_cfg = {'resize': [self.img_shape[0], self.img_shape[1]],
+                   'scale': 1 / 255.}
+
+        val_preprocessing_fn = functools.partial(self._augment, **val_cfg)
+
+        train_ds = self.get_baseline_dataset(x_train_filenames,
+                                             y_train_filenames,
+                                             preproc_fn=tr_preprocessing_fn,
+                                             batch_sz=self.batch_size)
+
+        val_ds = self.get_baseline_dataset(x_val_filenames,
+                                           y_val_filenames,
+                                           preproc_fn=val_preprocessing_fn,
+                                           batch_sz=self.batch_size)
+
+        return train_ds, val_ds
+
+    def generate_complete_ds(self, x_test, y_test):
+        tr_cfg = {'resize': [self.img_shape[0], self.img_shape[1]],
+                  'scale': 1 / 255.,
+                  'hue_delta': 0.1,
+                  'horizontal_flip': True,
+                  'width_shift_range': 0.2,
+                  'height_shift_range': 0.2}
+
+        comp_preprocessing_fn = functools.partial(self._augment, **tr_cfg)
+
+        comp_ds = self.get_baseline_dataset(x_test,
+                                             y_test,
+                                             preproc_fn=comp_preprocessing_fn,
+                                             batch_sz=self.batch_size)
+        return comp_ds
+
+    def generate_train_ds(self, x_test, y_test):
+        tr_cfg = {'resize': [self.img_shape[0], self.img_shape[1]],
+                  'scale': 1 / 255.,
+                  'hue_delta': 0.1,
+                  'horizontal_flip': True,
+                  'width_shift_range': 0.2,
+                  'height_shift_range': 0.2}
+
+        comp_preprocessing_fn = functools.partial(self._augment, **tr_cfg)
+
+        train_ds = self.get_baseline_dataset(x_test,
+                                             y_test,
+                                             preproc_fn=comp_preprocessing_fn,
+                                             batch_sz=self.batch_size)
+        return train_ds
+
+    def generate_test_ds(self, x_test, y_test):
+        val_cfg = {'resize': [self.img_shape[0], self.img_shape[1]],
+                   'scale': 1 / 255.}
+
+        test_preprocessing_fn = functools.partial(self._augment, **val_cfg)
+
+        test_ds = self.get_baseline_dataset(x_test,
+                                             y_test,
+                                             preproc_fn=test_preprocessing_fn,
+                                             batch_sz=self.batch_size)
+        return test_ds
+
     def load_filenames(self, df_train, img_dir, label_dir, test_size=0.2):
 
         x_train_filenames = []
@@ -276,10 +361,26 @@ class Functions:
         for lab_id in df_train['label']:
             y_train_filenames.append(os.path.join(label_dir, lab_id))
 
-        x_train_filenames, x_val_filenames, y_train_filenames, y_val_filenames = \
+        x_train_filenames, x_test_filenames, y_train_filenames, y_test_filenames = \
             train_test_split(x_train_filenames, y_train_filenames, test_size=test_size, random_state=42)
 
-        return x_train_filenames, x_val_filenames, y_train_filenames, y_val_filenames
+        x_train_filenames, x_val_filenames, y_train_filenames, y_val_filenames = \
+            train_test_split(x_train_filenames, y_train_filenames, test_size=0.15, random_state=42)
+
+        return x_train_filenames, x_val_filenames, x_test_filenames, y_train_filenames, y_val_filenames, y_test_filenames
+
+    def load_all_filenames(self, df_train, img_dir, label_dir):
+
+        x_train_filenames = []
+        y_train_filenames = []
+
+        for img_id in df_train['train']:
+            x_train_filenames.append(os.path.join(img_dir, img_id))
+
+        for lab_id in df_train['label']:
+            y_train_filenames.append(os.path.join(label_dir, lab_id))
+
+        return x_train_filenames, y_train_filenames
 
     def format_e(self,n):
         a = '%E' % n
@@ -324,6 +425,27 @@ class Functions:
 
         return experiment_folder, model_filename
 
+    def save_filename_kfold(self, kfold_dir, kfold_ind):
+
+        experiment_folder = "nn_kfold_" + str(kfold_ind) + "_"
+        now = datetime.datetime.now().strftime("%d%B%Y_%I-%M%p")
+        experiment_folder = experiment_folder + now
+        model_filename = experiment_folder + ".hdf5"
+
+        experiment_folder = os.path.join(kfold_dir, experiment_folder)
+
+        dir_name = os.path.join(self.experiment_path, experiment_folder)
+        model_filename = os.path.join(dir_name, model_filename)
+
+        try:
+            # Create target Directory
+            os.mkdir(dir_name)
+            print("Experiment folder ", dir_name, " ---> CREATED ")
+        except FileExistsError:
+            print("Directory ", dir_name, " already exists")
+
+        return experiment_folder, model_filename
+
 class Structure:
     def __init__(self, kernel_size=3, stride=2, pool=2):
         self.kernel_size = kernel_size
@@ -334,7 +456,7 @@ class Structure:
         encoder = layers.Conv2D(num_filters, (self.kernel_size, self.kernel_size), padding='same')(input_tensor)
         encoder = layers.BatchNormalization()(encoder)
         encoder = layers.Activation('relu')(encoder)
-        encoder = layers.Conv2D(num_filters, (self.kernel_size, self.kernel_size), padding='same')(encoder)
+        encoder = layers.Conv2D(num_filters, (self.kernel_size, self.kernel_size), padding='same',kernel_regularizer=l2(0.001))(encoder)
         encoder = layers.BatchNormalization()(encoder)
         encoder = layers.Activation('relu')(encoder)
         return encoder
@@ -352,7 +474,7 @@ class Structure:
         dropout = layers.Dropout(dropout_rate)(decoder)
         decoder = layers.BatchNormalization()(dropout)
         decoder = layers.Activation('relu')(decoder)
-        decoder = layers.Conv2D(num_filters, (self.kernel_size, self.kernel_size), padding='same')(decoder)
+        decoder = layers.Conv2D(num_filters, (self.kernel_size, self.kernel_size), padding='same', activity_regularizer=l2(0.001))(decoder)
         decoder = layers.BatchNormalization()(decoder)
         decoder = layers.Activation('relu')(decoder)
         decoder = layers.Conv2D(num_filters, (self.kernel_size, self.kernel_size), padding='same')(decoder)
@@ -379,7 +501,7 @@ class Structure:
 
         return inputs, outputs
 
-    def custom_model(self,input_shape, num_filters=32, dropout_rate = 0.25):
+    def custom_model(self,input_shape, num_filters=32, dropout_rate=0.25):
 
         inputs = layers.Input(shape=input_shape)  # 448,480
         encoder0_pool, encoder0 = self.encoder_block(inputs, num_filters, dropout_rate)  # 224,240
@@ -388,13 +510,40 @@ class Structure:
         encoder3_pool, encoder3 = self.encoder_block(encoder2_pool, num_filters*8, 0)  # 28 30
         encoder4_pool, encoder4 = self.encoder_block(encoder3_pool, num_filters*16, dropout_rate*1.4)  # 14 15
         center = self.conv_block(encoder4_pool, num_filters*32)  # center
-        decoder4 = self.decoder_block(center, encoder4, num_filters*16, dropout_rate*1.4)  # 16
+        dropout = layers.Dropout(dropout_rate)(center)
+        decoder4 = self.decoder_block(dropout, encoder4, num_filters*16, dropout_rate*1.4)  # 16
         decoder3 = self.decoder_block(decoder4, encoder3, num_filters*8, 0)  # 32
         decoder2 = self.decoder_block(decoder3, encoder2, num_filters*4, dropout_rate*1.4)  # 64
         decoder1 = self.decoder_block(decoder2, encoder1, num_filters*2, 0)  # 128
         decoder0 = self.decoder_block(decoder1, encoder0, num_filters, dropout_rate*1.4)  # 256
-        dropout = layers.Dropout(dropout_rate*2)(decoder0)
-        outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(dropout)
+        # dropout_e = layers.Dropout(dropout_rate)(decoder0)
+        outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(decoder0)
+
+        return inputs, outputs
+
+    def manual_model(self,input_shape, num_filters=32, dropout_rate = 0.25):
+
+        inputs = layers.Input(shape=input_shape)  # 448,480
+        encoder0_pool, encoder0 = self.encoder_block(inputs, 64, 0)  # 224,240
+        encoder1_pool, encoder1 = self.encoder_block(encoder0_pool, 128, 0)  # 112 120
+        encoder2_pool, encoder2 = self.encoder_block(encoder1_pool, 256, 0)  # 56 60
+        # dropout_000 =  layers.Dropout(dropout_rate)(encoder2_pool)
+        encoder3_pool, encoder3 = self.encoder_block(encoder2_pool, 512, 0)  # 28 30
+        dropout_00 =  layers.Dropout(dropout_rate)(encoder3_pool)
+        encoder4_pool, encoder4 = self.encoder_block(dropout_00, 1024, 0)  # 14 15
+        dropout_0 = layers.Dropout(dropout_rate)(encoder4_pool)
+        center = self.conv_block(dropout_0, 2048) # center
+        dropout = layers.Dropout(dropout_rate)(center)
+        decoder4 = self.decoder_block(dropout, encoder4, 1024, 0)  # 16
+        dropout_1 = layers.Dropout(dropout_rate)(decoder4)
+        decoder3 = self.decoder_block(dropout_1, encoder3, 512, 0)  # 32
+        dropuout_2 = layers.Dropout(dropout_rate)(decoder3)
+        decoder2 = self.decoder_block(dropuout_2, encoder2, 256, 0)  # 64
+        dropout_3 = layers.Dropout(dropout_rate/2)(decoder2)
+        decoder1 = self.decoder_block(dropout_3, encoder1, 128, 0)  # 128
+        decoder0 = self.decoder_block(decoder1, encoder0, 64, 0)  # 256
+        # dropout_e = layers.Dropout(dropout_rate)(decoder0)
+        outputs = layers.Conv2D(1, (1, 1), activation='sigmoid')(decoder0)
 
         return inputs, outputs
 
