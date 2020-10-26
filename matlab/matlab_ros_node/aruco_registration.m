@@ -2,6 +2,7 @@ clear;
 clc;
 close all;
 
+% add libraries and utils
 addpath('utilities');
 addpath('../dvrk_matlab');
 
@@ -10,29 +11,40 @@ rosshutdown;
 ros_config;
 rosinit
 
+
+psml=psm(psmName); % init PSM
+RESET_POSE = psml.get_position_current(); % for lazy people
+% --- FLAGS --- %
+RESET_FG = true;
 ARUCO_SET_POINT_FIXED = false; % true = marker on trocar, false = marker on EE
 ARUCO_PLOT_TRANS = true; % shows plot of the current transformation
-TF_CAM_ARUCO = false;
+
+% show different frames on the ARUCO_PLOT_TRANSTF_PEE_P0
+TF_CAM_ARUCO = false; 
 TF_CAM_PEE = true;
 TF_PEE_P0 = true;
+TF_ORIGIN = true;
 
+% read and save transform topic
 T_ar_c = ReadTransFromTopic('/tf','t0');
 T_c_ar = invhform(T_ar_c);
 
+% read and save PSM current cartesian position
 T_p0_pee = ReadPSMCartesianCurrent('/dvrk/PSM3/position_cartesian_local_current');
 T_pee_p0 = invhform(T_p0_pee);
 
-
+% rotate aruco marker frame to match the tool orientation
 pee_rot = T_ar_c(1:3,1:3) * rotx(270) * rotz(270);
 pee_tr = T_ar_c(1:3,4);
-
 T_c_pee = [pee_rot, pee_tr; [0 0 0 1]];
-
-%     T_c_pb = T_pee_c * T_pee_p0 * T_p0_pb;
 
 T_p0_c = T_c_pee * T_pee_p0;
 
+% translate to the tool origin
+ORIGIN_TR = [eye(3),[0 0 0.0125]'; [0 0 0 1]];
+T_OR = T_p0_c * ORIGIN_TR;
 
+% plot 3D frames
 if (ARUCO_PLOT_TRANS)
 
         figure
@@ -52,24 +64,32 @@ if (ARUCO_PLOT_TRANS)
             frame3d(T_p0_c(1:4,4), T_p0_c(1:3,1:3));
             text(T_p0_c(1,4),T_p0_c(2,4),T_p0_c(3,4), 'P0');
         end
+        if(TF_ORIGIN)
+            hold on
+            frame3d(T_OR(1:4,4), T_OR(1:3,1:3));
+            text(T_OR(1,4),T_OR(2,4),T_OR(3,4), 'ORIGIN');
+        end
 
 end
 
-%%
+%% SEND TF TO dVRK
 % send transform to dVRK console
-psml=psm(psmName);
-psml.set_base_frame(T_p0_c); 
+psml.set_base_frame(T_OR);
+pause(1);
 
-psml.get_position_current()
-psml.get_position_local_current()
-
-gogogo = psml.get_position_current() - psml.get_position_local_current();
-
-%%
-
+%% TEST POSE
+% define test pose and move there
 ref_pose = [eye(3), [0.0; 0.0; 0.05]; [0 0 0 1]];
-
 psml.move(ref_pose)
+
+%% RESET POSE IF NECESSARY
+
+if(RESET_FG)
+    pause(5)
+    psml.move(RESET_POSE)
+end
+
+
 
 
                                             
