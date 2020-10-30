@@ -24,8 +24,8 @@ TF_PEE_P0 = true;
 TF_ORIGIN = true;
 
 % read and save transform topic
-T_ar_c = ReadTransFromTopic('/tf','t0');
-T_c_ar = invhform(T_ar_c);
+T_ar_c = ReadTransFromTopic('/tf','t0',5);
+% T_c_ar = invhform(T_ar_c);
 
 % read and save PSM current cartesian position
 T_p0_pee = ReadPSMCartesianCurrent('/dvrk/PSM3/position_cartesian_local_current');
@@ -75,13 +75,13 @@ end
 psml=psm(psmName); % init PSM
 psml.set_base_frame(T_OR);
 pause(1);
-fprintf('WARNING: new base frame set.')
+fprintf('WARNING: new base frame set.\n')
 
 RESET_POSE = psml.get_position_current(); % for lazy people
 
 %% TEST POSE
 % define test pose and move there
-ref_pose = [eye(3), [0.0; 0.0; 0.05]; [0 0 0 1]];
+ref_pose = [eye(3), [0.0; 0; 0.05]; [0 0 0 1]];
 psml.move(ref_pose)
 
 %% RESET POSE IF NECESSARY
