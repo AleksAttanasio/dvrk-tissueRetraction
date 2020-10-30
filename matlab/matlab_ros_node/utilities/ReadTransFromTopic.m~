@@ -16,7 +16,7 @@ function [T_ar_c] = ReadTransFromTopic(topic_name, child_frame_id)
     
     if(msg_received == true)
 
-        fprintf(strcat(topic_name,'\', child_frame_id, ' correctly read. \n'))
+        fprintf(strcat(topic_name,child_frame_id, ' correctly read. \n'))
     end
     
     % convert rotation quaternion to rotation matrix

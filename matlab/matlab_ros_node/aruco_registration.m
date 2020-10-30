@@ -12,8 +12,6 @@ ros_config;
 rosinit
 
 
-psml=psm(psmName); % init PSM
-RESET_POSE = psml.get_position_current(); % for lazy people
 % --- FLAGS --- %
 RESET_FG = true;
 ARUCO_SET_POINT_FIXED = false; % true = marker on trocar, false = marker on EE
@@ -74,8 +72,12 @@ end
 
 %% SEND TF TO dVRK
 % send transform to dVRK console
+psml=psm(psmName); % init PSM
 psml.set_base_frame(T_OR);
 pause(1);
+fprintf('WARNING: new base frame set.')
+
+RESET_POSE = psml.get_position_current(); % for lazy people
 
 %% TEST POSE
 % define test pose and move there

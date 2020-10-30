@@ -13,7 +13,7 @@ rosinit
 
 
 psml=psm(psmName); % init PSM
-RESET_POSE = psml.get_position_current(); % for lazy people
+RESET_POSE = psml.get_position_local_current(); % for lazy people
 % --- FLAGS --- %
 RESET_FG = true;
 ARUCO_SET_POINT_FIXED = false; % true = marker on trocar, false = marker on EE
@@ -83,7 +83,9 @@ ref_pose = [eye(3), [0.0; 0.0; 0.05]; [0 0 0 1]];
 psml.move(ref_pose)
 
 %% RESET POSE IF NECESSARY
+
 if(RESET_FG)
+    pause(5)
     psml.move(RESET_POSE)
 end
 
